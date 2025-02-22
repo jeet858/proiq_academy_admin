@@ -19,7 +19,7 @@ export default function Home() {
     return <p>Loading...</p>;
   }
   if (status === "authenticated") {
-    router.push("/user-creation");
+    router.push("/dashboard");
   }
   return (
     <>

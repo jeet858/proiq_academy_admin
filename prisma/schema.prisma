@@ -27,9 +27,10 @@ model User{
     userType    String
     imageUrl    String
     phoneNumber String
-    class       Class[]
+    courses     Course[]
     centres     Centre[]
 }
+
 model Demo{
     id String @id
 }
@@ -52,37 +53,30 @@ model Student{
     imageUrl    String
     readdmission    Boolean
     centre          Centre @relation(fields: [centreId], references: [id], onDelete: Cascade)
-    studentMappings StudentClass[]
     attendance      Attendance[]
     payments        Payment[]
+    course Course[]
     createdAt DateTime @default(now()) @db.Timestamptz(5)
     updatedAt          DateTime  @updatedAt @db.Timestamptz(5)
 }
-model StudentClass {
-    studentId String
-    classId   String
-    student   Student @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
-    class     Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
-    @@id([studentId, classId]) // Composite primary key
-}
-model Class{
+
+
+model Course{
     id              String @id @default(uuid()) // Add an explicit ID
-    subject         String
-    centreId        String
-    facultyId       String
-    facultyName     String
-    faculty         User @relation(fields: [facultyId], references: [id])
-    centre          Centre @relation(fields: [centreId], references: [id], onDelete: Cascade)
-    studentMappings StudentClass[]
+    name         String
+    faculty         User []
+    centre          Centre []
+    studentMappings Student[]
     attendance      Attendance[]
 }
+
 model Centre {
     id          String @id @default(uuid())  // Unique identifier for the centre
     name        String @unique// Name of the institute
     location    String // Address or location details
     payments    Payment[]
     students    Student[]
-    classes     Class[]
+    courses     Course[]
     attendance  Attendance[]
     faculties   User[]
 }
@@ -90,15 +84,16 @@ model Centre {
 model Attendance {
     id        String   @id @default(uuid()) // Unique identifier
     studentId String
-    classId   String
+    courseId   String
     centreId  String
     date      DateTime // Date of the class
     status    AttendanceStatus // Enum for attendance status
     student   Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
-    class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+    course     Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
     centre    Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
-    @@unique([studentId, classId, date]) // A student can only have one attendance record per class per date
+    @@unique([studentId, courseId, date]) // A student can only have one attendance record per class per date
 }
+
 model Payment {
     id          String   @id @default(uuid()) 
     studentId   String
@@ -110,12 +105,14 @@ model Payment {
     centre      Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
     @@unique([studentId, paymentDate]) // A student can only have one payment record per date
 }
+
 enum AttendanceStatus {
     PRESENT
     ABSENT
     LATE
     EXCUSED
 }
+
 enum PaymentStatus {
     PAID
     PENDING

@@ -24,4 +24,19 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const users = await ctx.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        centres: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return users;
+  }),
 });

@@ -1,8 +1,10 @@
+import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { ChangeEventHandler, useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
+import SuccessPopup from "~/components/successPopup";
 import { MainPageTemplate } from "~/templates";
 import { api } from "~/utils/api";
 interface StudentForm {
@@ -32,6 +34,8 @@ export default function StudentRegistration() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const [errorString, setErrorString] = useState("");
+  const [isScuccess, setIsSuccess] = useState(false);
+
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
@@ -41,6 +45,9 @@ export default function StudentRegistration() {
   const createStudent = api.student.create.useMutation({
     onError(error, variables, context) {
       setErrorString(error.message);
+    },
+    onSuccess(data, variables, context) {
+      setIsSuccess(true);
     },
   });
   const { status, data: session } = useSession();
@@ -58,8 +65,15 @@ export default function StudentRegistration() {
   if (isLoading || status == "loading") {
     return <LoadingScreen />;
   }
-  if (isError) {
-    return <ErrorScreen errorString={errorString} />;
+  if (errorString != "" || isError) {
+    return (
+      <ErrorScreen
+        errorString={errorString}
+        onClick={() => {
+          setErrorString("");
+        }}
+      />
+    );
   }
   return (
     <MainPageTemplate>
@@ -272,6 +286,22 @@ export default function StudentRegistration() {
             Save
           </button>
         </div>
+        <Modal
+          aria-labelledby="unstyled-modal-title"
+          aria-describedby="unstyled-modal-description"
+          open={isScuccess}
+          onClose={() => {
+            setIsSuccess(false);
+          }}
+          className="flex h-full w-full items-center justify-center"
+        >
+          <SuccessPopup
+            onClick={() => {
+              setIsSuccess(false);
+            }}
+            message="Student registered succesfully"
+          />
+        </Modal>
       </form>
     </MainPageTemplate>
   );

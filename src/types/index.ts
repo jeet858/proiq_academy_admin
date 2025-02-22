@@ -51,11 +51,14 @@ export const StudentClassInput = z.object({
   classId: z.string({ required_error: "Class ID can't be empty" }),
 });
 
-export const ClassInput = z.object({
-  subject: z.string({ required_error: "Subject can't be empty" }),
-  centreId: z.string({ required_error: "Centre ID can't be empty" }),
-  facultyId: z.string({ required_error: "Faculty ID can't be empty" }),
-  facultyName: z.string({ required_error: "Faculty name can't be empty" }),
+export const CourseInput = z.object({
+  name: z.string({ required_error: "Subject can't be empty" }),
+  centreIds: z.array(z.string(), {
+    required_error: "Centres can't be empty",
+  }),
+  facultyIds: z.array(z.string(), {
+    required_error: "Faculties can't be empty",
+  }),
 });
 
 export const CentreInput = z.object({

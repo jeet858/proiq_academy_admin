@@ -64,7 +64,7 @@ const authOptions: AuthOptions = {
     },
   },
   pages: {
-    signIn: "/user-creation",
+    signIn: "/dashboard",
     signOut: "/login",
   },
 };

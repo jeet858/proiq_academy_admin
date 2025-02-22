@@ -4,6 +4,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import { CentreInput } from "~/types";
 
 export const centreRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -11,4 +12,14 @@ export const centreRouter = createTRPCRouter({
     const centreNames: string[] = centres.map((centre) => centre.name);
     return centreNames;
   }),
+  create: protectedProcedure
+    .input(CentreInput)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.centre.create({
+        data: {
+          location: input.location,
+          name: input.name,
+        },
+      });
+    }),
 });

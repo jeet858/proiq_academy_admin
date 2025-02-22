@@ -46,6 +46,40 @@ const SideBar: React.FunctionComponent = () => {
             </li>
             <li className="pb-2">
               <Link
+                href="create-centre"
+                className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                  pathName === "/create-centre"
+                    ? "rounded-full bg-[#FABA09]"
+                    : ""
+                }`}
+              >
+                <Image
+                  src={menuBarPayment}
+                  alt="Payment Logo"
+                  className="w-[20px]"
+                />
+                Create Centre
+              </Link>
+            </li>
+            <li className="pb-2">
+              <Link
+                href="create-course"
+                className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                  pathName === "/create-course"
+                    ? "rounded-full bg-[#FABA09]"
+                    : ""
+                }`}
+              >
+                <Image
+                  src={menuBarPayment}
+                  alt="Payment Logo"
+                  className="w-[20px]"
+                />
+                Create Course
+              </Link>
+            </li>
+            <li className="pb-2">
+              <Link
                 href="/attendance"
                 className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
                   pathName?.startsWith("/attendance")

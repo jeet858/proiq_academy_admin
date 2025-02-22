@@ -49,7 +49,9 @@ const UserCreation: React.FunctionComponent = () => {
     return <LoadingScreen />;
   }
   if (isError) {
-    return <ErrorScreen />;
+    return (
+      <ErrorScreen errorString="Error Occurred please refresh this screen" />
+    );
   }
   return (
     <MainPageTemplate>
