@@ -45,7 +45,7 @@ const MarkAttendanceTable: React.FunctionComponent<AttendanceTableProps> = ({
       setLocalData(attendance);
       setFirstRender(true);
     }
-  }, [attendance]);
+  }, [attendance, firstRender]);
   const markAsPresent = (index: number) => {
     setLocalData((prevData) => {
       if (!prevData) return prevData;
@@ -66,10 +66,10 @@ const MarkAttendanceTable: React.FunctionComponent<AttendanceTableProps> = ({
     });
   };
   const registerattendance = api.attendance.markattendance.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess() {
       setIsSuccess(true);
     },
-    onError(error, variables, context) {
+    onError(error) {
       setErrorString(error.message);
     },
   });

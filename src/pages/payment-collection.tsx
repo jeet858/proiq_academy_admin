@@ -1,4 +1,3 @@
-import { P } from "framer-motion/dist/types.d-6pKw1mTI";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -26,11 +25,10 @@ const PaymentCollection: React.FunctionComponent = () => {
   const {
     data: centres,
     isError,
-    isSuccess,
     isLoading,
   } = api.centre.getAllCentreByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: courses,
@@ -42,17 +40,16 @@ const PaymentCollection: React.FunctionComponent = () => {
   const {
     data: students,
     isError: isStudentsError,
-    isSuccess: isStudentsSuccess,
     isLoading: isStudentsLoading,
   } = api.student.getByCentreAndCourseId.useQuery({
     centreId: formData.centreId,
     courseId: formData.courseId,
   });
   const createPayment = api.payment.create.useMutation({
-    onError(error, variables, context) {
+    onError(error) {
       setErrorString(error.message);
     },
-    onSuccess(data, variables, context) {
+    onSuccess() {
       setIsSuccess(true);
     },
   });
@@ -128,9 +125,13 @@ const PaymentCollection: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Centre
             </option>
-            {centres?.map((centre, index) => {
+            {centres?.map((centre) => {
               return (
-                <option value={centre.id} className="text-black">
+                <option
+                  value={centre.id}
+                  className="text-black"
+                  key={centre.id}
+                >
                   {centre.name}
                 </option>
               );
@@ -149,9 +150,13 @@ const PaymentCollection: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Course
             </option>
-            {courses.map((course, index) => {
+            {courses.map((course) => {
               return (
-                <option value={course.id} className="text-black">
+                <option
+                  value={course.id}
+                  className="text-black"
+                  key={course.id}
+                >
                   {course.name}
                 </option>
               );
@@ -170,9 +175,13 @@ const PaymentCollection: React.FunctionComponent = () => {
             <option selected disabled>
               Select Student
             </option>
-            {students.map((student, index) => {
+            {students.map((student) => {
               return (
-                <option value={student.studentId} className="text-black">
+                <option
+                  value={student.studentId}
+                  className="text-black"
+                  key={student.studentId}
+                >
                   Name: {student.name}, Parent: {student.parentName}
                 </option>
               );

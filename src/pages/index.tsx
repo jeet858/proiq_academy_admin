@@ -1,12 +1,11 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
+
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { api } from "~/utils/api";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   console.log("index status", status);
   useEffect(() => {

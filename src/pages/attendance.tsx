@@ -12,7 +12,6 @@ interface AttendanceForm {
 }
 const Attendance: React.FunctionComponent = () => {
   const [errorString, setErrorString] = useState("");
-  const [isScuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState<AttendanceForm>({
     centreId: "",
     courseId: "",
@@ -23,11 +22,10 @@ const Attendance: React.FunctionComponent = () => {
   const {
     data: centres,
     isError,
-    isSuccess,
     isLoading,
   } = api.centre.getAllCentreByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: courses,
@@ -78,9 +76,13 @@ const Attendance: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Centre
             </option>
-            {centres?.map((centre, index) => {
+            {centres?.map((centre) => {
               return (
-                <option value={centre.id} className="text-black">
+                <option
+                  value={centre.id}
+                  className="text-black"
+                  key={centre.id}
+                >
                   {centre.name}
                 </option>
               );
@@ -99,9 +101,13 @@ const Attendance: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Course
             </option>
-            {courses.map((course, index) => {
+            {courses.map((course) => {
               return (
-                <option value={course.id} className="text-black">
+                <option
+                  value={course.id}
+                  className="text-black"
+                  key={course.id}
+                >
                   {course.name}
                 </option>
               );

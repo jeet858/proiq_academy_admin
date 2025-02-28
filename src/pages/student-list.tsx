@@ -1,9 +1,7 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useMemo, useState } from "react";
-import { unknown } from "zod";
-import CourseTable from "~/components/courseTable";
+import React, { useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorPopup from "~/components/errorPopup";
 import ErrorScreen from "~/components/errorScreen";
@@ -32,8 +30,8 @@ const StudentList: React.FunctionComponent = () => {
     isSuccess,
     isLoading,
   } = api.centre.getAllCentreNamesByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: students,

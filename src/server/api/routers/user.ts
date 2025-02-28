@@ -1,9 +1,4 @@
-import { z } from "zod";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { UserInput } from "~/types";
 
 export const userRouter = createTRPCRouter({

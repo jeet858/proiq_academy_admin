@@ -1,5 +1,5 @@
-import { $Enums } from "@prisma/client";
-import React from "react";
+import { type $Enums } from "@prisma/client";
+import type React from "react";
 interface Payment {
   student: {
     name: string;

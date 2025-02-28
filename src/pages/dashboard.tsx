@@ -9,7 +9,7 @@ import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
 
 export default function StudentDashboard() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   if (status == "unauthenticated") {
     return (

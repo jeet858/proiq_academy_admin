@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorPopup from "~/components/errorPopup";
 import ErrorScreen from "~/components/errorScreen";
@@ -24,13 +24,11 @@ const CreateCourse: React.FunctionComponent = () => {
   const {
     data: centres,
     isError,
-    isSuccess,
     isLoading,
   } = api.centre.getAllNames.useQuery();
   const {
     data: users,
     isError: isUsersError,
-    isSuccess: isUsersSuccess,
     isLoading: isUsersLoading,
   } = api.user.getAll.useQuery();
   const filteredUserNames: string[] =
@@ -54,10 +52,10 @@ const CreateCourse: React.FunctionComponent = () => {
   };
 
   const createCourse = api.course.create.useMutation({
-    onError(error, variables, context) {
+    onError(error) {
       setErrorString(error.message);
     },
-    onSuccess(data, variables, context) {
+    onSuccess() {
       setIsSuccess(true);
     },
   });

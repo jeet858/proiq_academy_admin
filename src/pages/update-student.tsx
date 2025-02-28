@@ -1,8 +1,8 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useState } from "react";
-import CustomDropdown from "~/components/customDropdown";
+import React, { useState } from "react";
+
 import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
 import SuccessPopup from "~/components/successPopup";
@@ -26,11 +26,10 @@ const UpdateStudent: React.FunctionComponent = () => {
   const {
     data: centres,
     isError,
-    isSuccess,
     isLoading,
   } = api.centre.getAllCentreByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: courses,
@@ -108,9 +107,13 @@ const UpdateStudent: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Centre
             </option>
-            {centres?.map((centre, index) => {
+            {centres?.map((centre) => {
               return (
-                <option value={centre.name} className="text-black">
+                <option
+                  value={centre.name}
+                  className="text-black"
+                  key={centre.name}
+                >
                   {centre.name}
                 </option>
               );
@@ -129,9 +132,9 @@ const UpdateStudent: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Course
             </option>
-            {courses.map((course, index) => {
+            {courses.map((course) => {
               return (
-                <option value={course} className="text-black">
+                <option value={course} className="text-black" key={course}>
                   {course}
                 </option>
               );
@@ -150,9 +153,13 @@ const UpdateStudent: React.FunctionComponent = () => {
             <option selected disabled>
               Select Student
             </option>
-            {students.map((student, index) => {
+            {students.map((student) => {
               return (
-                <option value={student.studentId} className="text-black">
+                <option
+                  value={student.studentId}
+                  className="text-black"
+                  key={student.studentId}
+                >
                   Name: {student.name}, Parent: {student.parentName}
                 </option>
               );

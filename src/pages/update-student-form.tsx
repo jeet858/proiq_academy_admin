@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
@@ -52,10 +52,10 @@ export default function UpdateStudentForm() {
     createStudent.mutate(formData);
   };
   const createStudent = api.student.update.useMutation({
-    onError(error, variables, context) {
+    onError(error) {
       setErrorString(error.message);
     },
-    onSuccess(data, variables, context) {
+    onSuccess() {
       setIsSuccess(true);
     },
   });
@@ -66,8 +66,8 @@ export default function UpdateStudentForm() {
     isSuccess,
     isLoading,
   } = api.centre.getAllCentreByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: courses,
@@ -153,9 +153,13 @@ export default function UpdateStudentForm() {
             <option selected value={""}>
               Select Centre
             </option>
-            {centres?.map((centre, index) => {
+            {centres?.map((centre) => {
               return (
-                <option value={centre.name} className="text-black">
+                <option
+                  value={centre.name}
+                  className="text-black"
+                  key={centre.name}
+                >
                   {centre.name}
                 </option>
               );

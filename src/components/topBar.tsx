@@ -1,16 +1,5 @@
 import Image from "next/image";
-import {
-  faCircleUser,
-  menuBarView,
-  notifications,
-  menuBarAttendance,
-  menuBarPayment,
-  menuBarStudentRegistrationLogo,
-  menuBarUpdate,
-  menuBarUpload,
-  settings,
-  signOutImg,
-} from "public";
+import { faCircleUser, menuBarView, notifications } from "public";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -145,7 +134,7 @@ const TopBar: React.FunctionComponent = () => {
                         className="relative flex w-full gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
                         onClick={async () => {
                           await signOut({ redirect: false });
-                          router.push("/");
+                          await router.push("/");
                         }}
                       >
                         Sign Out

@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
 import CourseTable from "~/components/courseTable";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorPopup from "~/components/errorPopup";
@@ -29,11 +29,6 @@ const CourseList: React.FunctionComponent = () => {
     isError: isCoursesError,
     isLoading: isCoursesLoading,
   } = api.course.getAll.useQuery();
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   if (status == "unauthenticated" || session?.user.role != "Admin") {
     return (

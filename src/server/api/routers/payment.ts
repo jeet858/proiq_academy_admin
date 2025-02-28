@@ -1,11 +1,6 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { MonthlyPaymentInput, PaymentInput } from "~/types";
-import { subDays, startOfMonth, endOfMonth } from "date-fns";
 export const paymentRouter = createTRPCRouter({
   create: protectedProcedure
     .input(PaymentInput)

@@ -6,22 +6,16 @@ import LoadingScreen from "~/components/loadingScreen";
 import { MainPageTemplate } from "~/templates";
 import { api } from "~/utils/api";
 import { AttendanceTable } from "~/components";
-interface AttendanceStatusForm {
-  centreId: string;
-  courseId: string;
-  date: string;
-}
+
 const Checkattendance: React.FunctionComponent = () => {
   const router = useRouter();
   const { centreId, courseId, date } = router.query;
   const [errorString, setErrorString] = useState("");
-  const [isScuccess, setIsSuccess] = useState(false);
 
-  const { status, data: session } = useSession();
+  const { status } = useSession();
   const {
     data: attendance,
     isError,
-    isSuccess,
     isLoading,
   } = api.attendance.getDynamicattendance.useQuery({
     centreId: centreId as string,

@@ -1,14 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import React from "react";
-import {
-  menuBarAttendance,
-  menuBarPayment,
-  menuBarStudentRegistrationLogo,
-  menuBarUpdate,
-  proiqLogoWhite1,
-  settings,
-  signOutImg,
-} from "public";
+import { proiqLogoWhite1 } from "public";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -25,8 +17,8 @@ const SideBar: React.FunctionComponent = () => {
             src={proiqLogoWhite1 as StaticImageData}
             alt="Pro IQ Academy"
             className="cursor-pointer"
-            onClick={() => {
-              router.push("/dashboard");
+            onClick={async () => {
+              await router.push("/dashboard");
             }}
           />
         </div>
@@ -105,7 +97,7 @@ const SideBar: React.FunctionComponent = () => {
                 className="relative flex w-full gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
                 onClick={async () => {
                   await signOut({ redirect: false });
-                  router.push("/");
+                  await router.push("/");
                 }}
               >
                 Sign Out

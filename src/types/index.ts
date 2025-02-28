@@ -1,5 +1,4 @@
 import { $Enums } from "@prisma/client";
-import { a } from "framer-motion/dist/types.d-6pKw1mTI";
 import { z } from "zod";
 
 export const PostInput = z.object({

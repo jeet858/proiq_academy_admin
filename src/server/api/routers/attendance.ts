@@ -1,11 +1,5 @@
 import { $Enums } from "@prisma/client";
-import { z } from "zod";
-import Markattendance from "~/pages/mark-attendance";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { AttendanceInput, GetAttendanceInput } from "~/types";
 
 export const attendanceRouter = createTRPCRouter({

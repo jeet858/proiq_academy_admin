@@ -34,7 +34,6 @@ interface PaymentData {
 }
 const PaymentStatus: React.FunctionComponent = () => {
   const [errorString, setErrorString] = useState("");
-  const [isScuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState<PaymentStatusForm>({
     centreId: "",
     courseId: "",
@@ -47,11 +46,10 @@ const PaymentStatus: React.FunctionComponent = () => {
   const {
     data: centres,
     isError,
-    isSuccess,
     isLoading,
   } = api.centre.getAllCentreByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: courses,
@@ -63,7 +61,6 @@ const PaymentStatus: React.FunctionComponent = () => {
   const {
     data: students,
     isError: isStudentsError,
-    isSuccess: isStudentsSuccess,
     isLoading: isStudentsLoading,
   } = api.student.getByCentreAndCourseId.useQuery({
     centreId: formData.centreId,
@@ -111,11 +108,18 @@ const PaymentStatus: React.FunctionComponent = () => {
     status == "loading" ||
     isLoading ||
     isCoursesLoading ||
-    isStudentsLoading
+    isStudentsLoading ||
+    isPaymentDataLoading
   ) {
     return <LoadingScreen />;
   }
-  if (errorString != "" || isError || isCoursesError || isStudentsError) {
+  if (
+    errorString != "" ||
+    isError ||
+    isCoursesError ||
+    isStudentsError ||
+    isPaymentDataError
+  ) {
     return (
       <ErrorScreen
         errorString={errorString}
@@ -153,9 +157,13 @@ const PaymentStatus: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Centre
             </option>
-            {centres?.map((centre, index) => {
+            {centres?.map((centre) => {
               return (
-                <option value={centre.id} className="text-black">
+                <option
+                  value={centre.id}
+                  className="text-black"
+                  key={centre.id}
+                >
                   {centre.name}
                 </option>
               );
@@ -174,9 +182,13 @@ const PaymentStatus: React.FunctionComponent = () => {
             <option selected disabled value="">
               Select Course
             </option>
-            {courses.map((course, index) => {
+            {courses.map((course) => {
               return (
-                <option value={course.id} className="text-black">
+                <option
+                  value={course.id}
+                  className="text-black"
+                  key={course.id}
+                >
                   {course.name}
                 </option>
               );
@@ -203,9 +215,13 @@ const PaymentStatus: React.FunctionComponent = () => {
             <option selected disabled>
               Select Student
             </option>
-            {students.map((student, index) => {
+            {students.map((student) => {
               return (
-                <option value={student.studentId} className="text-black">
+                <option
+                  value={student.studentId}
+                  className="text-black"
+                  key={student.studentId}
+                >
                   Name: {student.name}, Parent: {student.parentName}
                 </option>
               );

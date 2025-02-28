@@ -1,8 +1,7 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useState } from "react";
-import CustomDropdown from "~/components/customDropdown";
+import React, { useState } from "react";
 import ErrorPopup from "~/components/errorPopup";
 import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
@@ -32,10 +31,10 @@ const CreateCentre: React.FunctionComponent = () => {
   };
 
   const createCentre = api.centre.create.useMutation({
-    onError(error, variables, context) {
+    onError(error) {
       setErrorString(error.message);
     },
-    onSuccess(data, variables, context) {
+    onSuccess() {
       setIsSuccess(true);
     },
   });

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { academyLogo, loginImg } from "public";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
-import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -42,7 +41,7 @@ const Login: React.FunctionComponent = () => {
     if (result?.error) {
       setError("Invalid email or password");
     } else {
-      router.push("/dashboard");
+      await router.push("/dashboard");
     }
   };
 

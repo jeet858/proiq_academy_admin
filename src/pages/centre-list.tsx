@@ -1,10 +1,8 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
 import CentreTable from "~/components/centreTable";
-import CourseTable from "~/components/courseTable";
-import CustomDropdown from "~/components/customDropdown";
 import ErrorPopup from "~/components/errorPopup";
 import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
@@ -15,18 +13,11 @@ interface CentreForm {
   centreNames: string[];
 }
 const CentreList: React.FunctionComponent = () => {
-  const [formData, setFormData] = useState<CentreForm>({} as CentreForm);
   const [errorString, setErrorString] = useState("");
   const [isScuccess, setIsSuccess] = useState(false);
   const { status, data: session } = useSession();
 
   const { data: centres, isError, isLoading } = api.centre.getAll.useQuery();
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   if (status == "unauthenticated" || session?.user.role != "Admin") {
     return (
@@ -55,7 +46,7 @@ const CentreList: React.FunctionComponent = () => {
         <div className="w-4/5">
           <CentreTable centres={centres} />
         </div>
-        <div className="flex gap-x-6 self-center justify-self-center pb-7">
+        {/* <div className="flex gap-x-6 self-center justify-self-center pb-7">
           <button
             type="button"
             onClick={() => setFormData({} as CentreForm)}
@@ -63,7 +54,7 @@ const CentreList: React.FunctionComponent = () => {
           >
             Cancel
           </button>
-        </div>
+        </div> */}
       </div>
       <Modal
         aria-labelledby="unstyled-modal-title"

@@ -10,13 +10,6 @@ const ErrorScreen: React.FunctionComponent<ErrorProps> = ({
   errorString,
   onClick,
 }) => {
-  const handleOnClick = () => {
-    if (onClick) {
-      onClick();
-    } else {
-      window.location.reload();
-    }
-  };
   return (
     <MainPageTemplate>
       <div className="flex h-full w-full flex-col items-center justify-center self-center justify-self-center bg-white">

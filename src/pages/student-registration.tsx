@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorPopup from "~/components/errorPopup";
 import ErrorScreen from "~/components/errorScreen";
@@ -68,10 +68,10 @@ export default function StudentRegistration() {
     // Add further form submission logic here (e.g., API call)
   };
   const createStudent = api.student.create.useMutation({
-    onError(error, variables, context) {
+    onError(error) {
       setErrorString(error.message);
     },
-    onSuccess(data, variables, context) {
+    onSuccess() {
       setIsSuccess(true);
     },
   });
@@ -79,11 +79,11 @@ export default function StudentRegistration() {
   const {
     data: centres,
     isError,
-    isSuccess,
+
     isLoading,
   } = api.centre.getAllCentreByUserId.useQuery({
-    id: session?.user.id as string,
-    role: session?.user.role as string,
+    id: session!.user.id,
+    role: session!.user.role,
   });
   const {
     data: courses,
@@ -169,9 +169,13 @@ export default function StudentRegistration() {
             <option selected value="">
               Select Centre
             </option>
-            {centres?.map((centre, index) => {
+            {centres?.map((centre) => {
               return (
-                <option value={centre.id} className="text-black">
+                <option
+                  value={centre.id}
+                  className="text-black"
+                  key={centre.id}
+                >
                   {centre.name}
                 </option>
               );

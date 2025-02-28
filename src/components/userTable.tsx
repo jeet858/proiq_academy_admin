@@ -1,9 +1,4 @@
-import { $Enums } from "@prisma/client";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { FaCheck } from "react-icons/fa";
-import { ImCross } from "react-icons/im";
-import { api } from "~/utils/api";
+import React, { useState } from "react";
 
 interface CentreTableProps {
   users: UserData[];
