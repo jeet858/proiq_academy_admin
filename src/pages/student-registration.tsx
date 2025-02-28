@@ -1,5 +1,6 @@
 import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React, { ChangeEventHandler, useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorPopup from "~/components/errorPopup";
@@ -80,7 +81,7 @@ export default function StudentRegistration() {
     isError,
     isSuccess,
     isLoading,
-  } = api.centre.getAllNamesByUserId.useQuery({
+  } = api.centre.getAllCentreByUserId.useQuery({
     id: session?.user.id as string,
     role: session?.user.role as string,
   });
@@ -115,7 +116,7 @@ export default function StudentRegistration() {
         onSubmit={handleSubmit}
         className="flex w-full flex-col justify-center gap-y-7"
       >
-        <div className="flex gap-x-4 self-center px-[10%] pt-7">
+        <div className="relative flex w-full min-w-full flex-row justify-center gap-x-4 self-center px-[10%] pt-7">
           <h1 className="self-center py-7 text-3xl">
             Student <span className="text-[#DCA200]"> Registration</span>
           </h1>
@@ -128,6 +129,12 @@ export default function StudentRegistration() {
               ✏️
             </button>
           </div>
+          <Link
+            className="absolute right-[10%] rounded-full bg-[#FCD56C] px-4 py-2 text-[#202B5D] shadow-md hover:bg-[#FABA09] lg:self-end"
+            href="student-list"
+          >
+            View All Students
+          </Link>
         </div>
         <div className="w-full bg-[#FABA09] bg-opacity-60 px-[10%] py-4 text-2xl">
           Student Details

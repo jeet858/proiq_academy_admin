@@ -160,4 +160,46 @@ export const studentRouter = createTRPCRouter({
       });
       return students;
     }),
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const students = await ctx.prisma.student.findMany({
+      select: {
+        studentId: true,
+        address: true,
+        centre: {
+          select: {
+            name: true,
+          },
+        },
+        classDays: true,
+        classTiming: true,
+        course: {
+          select: {
+            name: true,
+          },
+        },
+        courseDuration: true,
+        idProof: true,
+        idProofType: true,
+        imageUrl: true,
+        name: true,
+        parentContactNumber1: true,
+        parentContactNumber2: true,
+        parentName: true,
+        parentOccupation: true,
+        centreId: true,
+        readdmission: true,
+        payments: {
+          take: 1, // Get only the most recent payment
+          orderBy: {
+            paymentDate: "desc", // Sort payments by date (newest first)
+          },
+          select: {
+            amountPaid: true,
+            paymentDate: true,
+          },
+        },
+      },
+    });
+    return students;
+  }),
 });

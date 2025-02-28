@@ -14,12 +14,16 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 
 const TopBar: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLImageElement>(null);
   const { data: session, status } = useSession();
+  const pathName = usePathname();
+  const router = useRouter();
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -45,7 +49,9 @@ const TopBar: React.FunctionComponent = () => {
         </div>
         {/* name-designation block */}
         <div className="flex flex-col px-[1%] font-medium text-[#202B5D]">
-          <div className="text-lg">{session?.user.email}</div>
+          <div className="text-lg">
+            {session?.user.name}, {session?.user.email}
+          </div>
           <div className="text-base">{session?.user.role}</div>
         </div>
         <div className="flex w-[27px] items-center lg:hidden">
@@ -69,105 +75,94 @@ const TopBar: React.FunctionComponent = () => {
                     <li className="pb-2">
                       <Link
                         href="student-registration"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                        className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                          pathName === "/student-registration"
+                            ? "rounded-full bg-[#FABA09]"
+                            : ""
+                        }`}
                       >
-                        <Image
-                          src={menuBarStudentRegistrationLogo}
-                          alt="Student Registration Logo"
-                          className="w-[20px]"
-                        />
                         Student Registration
                       </Link>
                     </li>
                     <li className="pb-2">
                       <Link
-                        href="#"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                        href="create-centre"
+                        className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                          pathName.includes("centre")
+                            ? "rounded-full bg-[#FABA09]"
+                            : ""
+                        }`}
                       >
-                        <Image
-                          src={menuBarAttendance}
-                          alt="Attendance Logo "
-                          className="w-[20px]"
-                        />
+                        Create Centre
+                      </Link>
+                    </li>
+                    <li className="pb-2">
+                      <Link
+                        href="create-course"
+                        className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                          pathName?.includes("course")
+                            ? "rounded-full bg-[#FABA09]"
+                            : ""
+                        }`}
+                      >
+                        Create Course
+                      </Link>
+                    </li>
+                    <li className="pb-2">
+                      <Link
+                        href="attendance"
+                        className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                          pathName?.includes("attendance")
+                            ? "rounded-full bg-[#FABA09]"
+                            : ""
+                        }`}
+                      >
                         Attendance / Footfall
                       </Link>
                     </li>
                     <li className="pb-2">
                       <Link
-                        href="#"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                        href="payment-collection"
+                        className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                          pathName.includes("payment")
+                            ? "rounded-full bg-[#FABA09]"
+                            : ""
+                        }`}
                       >
-                        <Image
-                          src={menuBarPayment}
-                          alt="Payment Logo"
-                          className="w-[20px]"
-                        />
                         Payment Collection
                       </Link>
                     </li>
                     <li className="pb-2">
                       <Link
-                        href="#"
+                        href="update-student"
                         className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
                       >
-                        <Image
-                          src={menuBarUpdate}
-                          alt="Update Student Reg. Logo"
-                          className="w-[20px]"
-                        />
                         Update Student Reg.
                       </Link>
                     </li>
-                    <li className="pb-2">
-                      <Link
-                        href="#"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                    <li className="pb-4">
+                      <button
+                        className="relative flex w-full gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                        onClick={async () => {
+                          await signOut({ redirect: false });
+                          router.push("/");
+                        }}
                       >
-                        <Image
-                          src={menuBarUpload}
-                          alt="Upload Result Logo"
-                          className="w-[20px]"
-                        />
-                        Upload Results
-                      </Link>
-                    </li>
-                    <li className="pb-2">
-                      <Link
-                        href="#"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
-                      >
-                        <Image
-                          src={menuBarView}
-                          alt="View Result Logo"
-                          className="w-[20px]"
-                        />
-                        View Results
-                      </Link>
-                    </li>
-                    <li className="pb-2">
-                      <Link
-                        href="#"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
-                      >
-                        <Image
-                          src={signOutImg}
-                          alt="Sign-Out Logo"
-                          className="w-5"
-                        />
                         Sign Out
-                      </Link>
+                      </button>
                     </li>
                     <li className="pb-2">
+                      {" "}
+                      {/* Add pb-2 for consistent padding-bottom */}
                       <Link
-                        href="#"
-                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                        href="user-creation"
+                        className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
+                          pathName.includes("user")
+                            ? "rounded-full bg-[#FABA09]"
+                            : ""
+                        }`}
                       >
-                        <Image
-                          src={settings}
-                          alt="Settings Logo"
-                          className="w-5"
-                        />
-                        Settings
+                        User Creation
                       </Link>
                     </li>
                   </ul>

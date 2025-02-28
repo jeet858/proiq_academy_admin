@@ -28,7 +28,7 @@ const UpdateStudent: React.FunctionComponent = () => {
     isError,
     isSuccess,
     isLoading,
-  } = api.centre.getAllNamesByUserId.useQuery({
+  } = api.centre.getAllCentreByUserId.useQuery({
     id: session?.user.id as string,
     role: session?.user.role as string,
   });

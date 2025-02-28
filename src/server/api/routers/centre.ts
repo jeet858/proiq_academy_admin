@@ -27,7 +27,7 @@ export const centreRouter = createTRPCRouter({
     });
     return centres;
   }),
-  getAllNamesByUserId: protectedProcedure
+  getAllCentreByUserId: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -35,7 +35,7 @@ export const centreRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      if (input.role === "admin") {
+      if (input.role === "Admin") {
         const centres = await ctx.prisma.centre.findMany();
         return centres;
       }
@@ -55,6 +55,33 @@ export const centreRouter = createTRPCRouter({
 
       return centres?.centres;
     }),
+  getAllCentreNamesByUserId: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        role: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (input.role === "Admin") {
+        const centres = await ctx.prisma.centre.findMany({
+          select: { name: true },
+        });
+        return centres.map((centre) => centre.name); // Return only names
+      }
+
+      const userCentres = await ctx.prisma.user.findUnique({
+        where: { id: input.id },
+        select: {
+          centres: {
+            select: { name: true },
+          },
+        },
+      });
+
+      return userCentres?.centres.map((centre) => centre.name) || []; // Return only names
+    }),
+
   create: protectedProcedure
     .input(CentreInput)
     .mutation(async ({ ctx, input }) => {

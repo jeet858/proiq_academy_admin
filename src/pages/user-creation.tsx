@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
 import ErrorScreen from "~/components/errorScreen";
@@ -56,13 +57,24 @@ const UserCreation: React.FunctionComponent = () => {
   return (
     <MainPageTemplate>
       <div className="flex w-full flex-col">
-        <h1 className="self-center py-7 text-3xl">User Creation</h1>
+        <div className="relative mt-4 flex w-full flex-row items-center justify-end px-[5%] py-7 lg:flex-col lg:px-[10%]">
+          <h1 className=" text-3xl md:absolute md:left-1/2 md:-translate-x-1/2">
+            User <span className="text-[#DCA200]">User Creation</span>
+          </h1>
+          <Link
+            className="rounded-full bg-[#FCD56C] px-4 py-2 text-[#202B5D] shadow-md hover:bg-[#FABA09] lg:self-end"
+            href="user-list"
+          >
+            View All Users
+          </Link>
+        </div>
         <div className="relative h-24 w-24 self-center">
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-300"></div>
           <button className="absolute bottom-0 right-0 rounded-full bg-gray-500 p-1 text-white shadow-md hover:bg-gray-600">
             ✏️
           </button>
         </div>
+
         <div className="grid grid-cols-1 py-7 lg:grid-cols-2">
           <input
             name="name"

@@ -6,27 +6,25 @@ import { ImCross } from "react-icons/im";
 import { api } from "~/utils/api";
 
 interface CentreTableProps {
-  centres: CentreData[];
+  users: UserData[];
 }
-interface CentreData {
-  name: string;
+interface UserData {
+  email: string;
   id: string;
-  location: string;
-  faculties: {
+  userType: string;
+  phoneNumber: string;
+  name: string;
+  centres: {
+    name: string;
+  }[];
+  courses: {
     name: string;
   }[];
 }
 
-const CentreTable: React.FunctionComponent<CentreTableProps> = ({
-  centres,
-}) => {
+const UserTable: React.FunctionComponent<CentreTableProps> = ({ users }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredCentres = centres.filter((centre) => {
-    const matchesSearch = centre.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    return matchesSearch;
-  });
+
   return (
     <div className="w-full py-6">
       <div className="relative flex w-full flex-col-reverse items-start justify-start gap-y-2 py-7 lg:flex-row">
@@ -52,23 +50,28 @@ const CentreTable: React.FunctionComponent<CentreTableProps> = ({
                 ID
               </th>
               <th className="border-b border-r border-dashed p-2">Name</th>
-
-              <th className="border-b border-r border-dashed p-2">Location</th>
-              <th className="border-b border-r border-dashed p-2">
-                Faculty Names
-              </th>
+              <th className="border-b border-r border-dashed p-2">Email</th>
+              <th className="border-b border-r border-dashed p-2">Phone No.</th>
+              <th className="border-b border-r border-dashed p-2">User Type</th>
+              <th className="border-b border-r border-dashed p-2">Centres</th>
+              <th className="border-b border-r border-dashed p-2">Courses</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-transparent">
-            {filteredCentres?.map((centre, index) => (
+            {users?.map((user, index) => (
               <tr key={index} className="border-b border-dashed text-center">
                 <td className="border border-dashed p-2">
-                  {centre.id.slice(0, 8)}
+                  {user.id.slice(0, 8)}
                 </td>
-                <td className="border border-dashed p-2">{centre.name}</td>
-                <td className="border border-dashed p-2">{centre.location}</td>
+                <td className="border border-dashed p-2">{user.name}</td>
+                <td className="border border-dashed p-2">{user.email}</td>
+                <td className="border border-dashed p-2">{user.phoneNumber}</td>
+                <td className="border border-dashed p-2">{user.userType}</td>
                 <td className="border border-dashed p-2">
-                  {centre.faculties.map((f) => f.name).join(", ") || "N/A"}
+                  {user.centres.map((c) => c.name).join(", ") || "N/A"}
+                </td>
+                <td className="border border-dashed p-2">
+                  {user.courses.map((c) => c.name).join(", ") || "N/A"}
                 </td>
               </tr>
             ))}
@@ -78,4 +81,4 @@ const CentreTable: React.FunctionComponent<CentreTableProps> = ({
     </div>
   );
 };
-export default CentreTable;
+export default UserTable;

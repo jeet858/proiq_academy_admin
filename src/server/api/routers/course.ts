@@ -69,6 +69,29 @@ export const courseRouter = createTRPCRouter({
       const courseNames: string[] = courses.map((course) => course.name);
       return courseNames;
     }),
+  getCourseNameByMultipleCentreNames: protectedProcedure
+    .input(
+      z.object({
+        centreNames: z.array(z.string()),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const courses = await ctx.prisma.course.findMany({
+        where: {
+          centre: {
+            some: {
+              name: {
+                in: input.centreNames,
+              },
+            },
+          },
+        },
+      });
+
+      const courseNames: string[] = courses.map((course) => course.name);
+      return courseNames;
+    }),
+
   getCourseByCentreId: protectedProcedure
     .input(
       z.object({

@@ -30,11 +30,21 @@ export const userRouter = createTRPCRouter({
         id: true,
         email: true,
         name: true,
+        userType: true,
+        phoneNumber: true,
         centres: {
           select: {
             name: true,
           },
         },
+        courses: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        userType: "asc",
       },
     });
     return users;

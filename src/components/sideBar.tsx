@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 const SideBar: React.FunctionComponent = () => {
   const pathName = usePathname();
   const router = useRouter();
-  console.log(pathName);
 
   return (
     <div className="font-poppins hidden min-h-screen w-[270px] min-w-[270px] flex-col bg-[#202B5D] text-white lg:flex">
@@ -42,11 +41,6 @@ const SideBar: React.FunctionComponent = () => {
                     : ""
                 }`}
               >
-                <Image
-                  src={menuBarStudentRegistrationLogo}
-                  alt="Student Registration Logo"
-                  className="w-[20px]"
-                />
                 Student Registration
               </Link>
             </li>
@@ -57,11 +51,6 @@ const SideBar: React.FunctionComponent = () => {
                   pathName.includes("centre") ? "rounded-full bg-[#FABA09]" : ""
                 }`}
               >
-                <Image
-                  src={menuBarPayment}
-                  alt="Payment Logo"
-                  className="w-[20px]"
-                />
                 Create Centre
               </Link>
             </li>
@@ -74,11 +63,6 @@ const SideBar: React.FunctionComponent = () => {
                     : ""
                 }`}
               >
-                <Image
-                  src={menuBarPayment}
-                  alt="Payment Logo"
-                  className="w-[20px]"
-                />
                 Create Course
               </Link>
             </li>
@@ -91,11 +75,6 @@ const SideBar: React.FunctionComponent = () => {
                     : ""
                 }`}
               >
-                <Image
-                  src={menuBarAttendance}
-                  alt="Attendance Logo "
-                  className="w-[20px]"
-                />
                 Attendance / Footfall
               </Link>
             </li>
@@ -108,11 +87,6 @@ const SideBar: React.FunctionComponent = () => {
                     : ""
                 }`}
               >
-                <Image
-                  src={menuBarPayment}
-                  alt="Payment Logo"
-                  className="w-[20px]"
-                />
                 Payment Collection
               </Link>
             </li>
@@ -121,16 +95,11 @@ const SideBar: React.FunctionComponent = () => {
                 href="update-student"
                 className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
               >
-                <Image
-                  src={menuBarUpdate}
-                  alt="Update Student Reg. Logo"
-                  className="w-[20px]"
-                />
                 Update Student Reg.
               </Link>
             </li>
           </ul>
-          <ul className="mt-10 w-full pb-10 pl-2">
+          <ul className="mt-10 w-full pb-10">
             <li className="pb-4">
               <button
                 className="relative flex w-full gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
@@ -139,7 +108,6 @@ const SideBar: React.FunctionComponent = () => {
                   router.push("/");
                 }}
               >
-                <Image src={signOutImg} alt="Sign-Out Logo" className="w-5" />
                 Sign Out
               </button>
             </li>
@@ -149,12 +117,9 @@ const SideBar: React.FunctionComponent = () => {
               <Link
                 href="user-creation"
                 className={`relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999] ${
-                  pathName === "/user-creation"
-                    ? "rounded-full bg-[#FABA09]"
-                    : ""
+                  pathName.includes("user") ? "rounded-full bg-[#FABA09]" : ""
                 }`}
               >
-                <Image src={settings} alt="Settings Logo" className="w-5" />
                 User Creation
               </Link>
             </li>
