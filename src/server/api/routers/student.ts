@@ -1,6 +1,7 @@
-import { StudentInput } from "~/types";
+import { ReaddmissionInput, StudentInput } from "~/types";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
+import { $Enums } from "@prisma/client";
 
 export const studentRouter = createTRPCRouter({
   create: protectedProcedure
@@ -25,6 +26,7 @@ export const studentRouter = createTRPCRouter({
           parentName: input.parentName,
           parentOccupation: input.parentOccupation,
           readdmission: false,
+          readdmissionPaymentStatus: false,
           parentContactNumber2: input.parentContactNumber2,
           centre: {
             connect: {
@@ -58,7 +60,6 @@ export const studentRouter = createTRPCRouter({
           parentContactNumber1: input.parentContactNumber1,
           parentName: input.parentName,
           parentOccupation: input.parentOccupation,
-          readdmission: false,
           parentContactNumber2: input.parentContactNumber2,
           centre: {
             connect: {
@@ -67,6 +68,44 @@ export const studentRouter = createTRPCRouter({
           },
         },
       });
+    }),
+  readmission: protectedProcedure
+    .input(ReaddmissionInput)
+    .mutation(async ({ ctx, input }) => {
+      const date = new Date();
+      const arr: any[] = [];
+      input.studentData.map((studentData) => {
+        const transaction = ctx.prisma.student.update({
+          where: {
+            studentId: studentData.studentId,
+          },
+          data: {
+            readdmission: studentData.readdmission,
+            readdmissionPaymentStatus: studentData.readdmissionPaymentStatus,
+            readdmissionCourseId: input.readdmissionCourseId,
+            course: {
+              connect: { id: input.readdmissionCourseId },
+              disconnect: { id: input.courseId },
+            },
+          },
+        });
+        arr.push(transaction);
+        if (studentData.readdmissionPaymentStatus) {
+          const transaction = ctx.prisma.payment.create({
+            data: {
+              studentId: studentData.studentId,
+              amountPaid: Number(input.readdmissionPaymentAmount),
+              centreId: input.centreId,
+              courseId: input.readdmissionCourseId,
+              paymentFor: "Readdmission Fees",
+              status: $Enums.PaymentStatus.PAID,
+              paymentDate: date,
+            },
+          });
+          arr.push(transaction);
+        }
+      });
+      return await ctx.prisma.$transaction(arr);
     }),
   getById: protectedProcedure
     .input(
@@ -151,11 +190,29 @@ export const studentRouter = createTRPCRouter({
           centre: {
             id: input.centreId,
           },
+
           course: {
-            every: {
+            some: {
               id: input.courseId,
             },
           },
+        },
+        select: {
+          centre: {
+            select: {
+              name: true,
+            },
+          },
+          course: {
+            select: {
+              name: true,
+            },
+          },
+          studentId: true,
+          name: true,
+          parentName: true,
+          readdmission: true,
+          readdmissionCourseId: true,
         },
       });
       return students;
@@ -188,6 +245,8 @@ export const studentRouter = createTRPCRouter({
         parentOccupation: true,
         centreId: true,
         readdmission: true,
+        readdmissionCourseId: true,
+        readdmissionPaymentStatus: true,
         payments: {
           take: 1, // Get only the most recent payment
           orderBy: {
@@ -196,6 +255,7 @@ export const studentRouter = createTRPCRouter({
           select: {
             amountPaid: true,
             paymentDate: true,
+            paymentFor: true,
           },
         },
       },

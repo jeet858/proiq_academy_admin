@@ -5,16 +5,40 @@ export const paymentRouter = createTRPCRouter({
   create: protectedProcedure
     .input(PaymentInput)
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.payment.create({
-        data: {
-          amountPaid: input.amountPaid,
-          paymentDate: input.paymentDate,
-          status: input.status,
-          centreId: input.centreId,
-          courseId: input.courseId,
-          studentId: input.studentId,
-        },
-      });
+      if (input.paymentFor === "Course Fees") {
+        return await ctx.prisma.payment.create({
+          data: {
+            amountPaid: input.amountPaid,
+            paymentDate: input.paymentDate,
+            status: input.status,
+            centreId: input.centreId,
+            courseId: input.courseId,
+            studentId: input.studentId,
+            paymentFor: input.paymentFor,
+          },
+        });
+      } else {
+        const payment = ctx.prisma.payment.create({
+          data: {
+            amountPaid: input.amountPaid,
+            paymentDate: input.paymentDate,
+            status: input.status,
+            centreId: input.centreId,
+            courseId: input.courseId,
+            studentId: input.studentId,
+            paymentFor: input.paymentFor,
+          },
+        });
+        const updateStudent = ctx.prisma.student.update({
+          where: {
+            studentId: input.studentId,
+          },
+          data: {
+            readdmissionPaymentStatus: true,
+          },
+        });
+        return await ctx.prisma.$transaction([payment, updateStudent]);
+      }
     }),
   getMonthlyPayments: protectedProcedure
     .input(MonthlyPaymentInput)
@@ -69,17 +93,27 @@ export const paymentRouter = createTRPCRouter({
   getAllMonthlyPayments: protectedProcedure
     .input(
       z.object({
-        month: z.string({ required_error: "Month can't be empty" }),
+        startingMonth: z.string({
+          required_error: "Starting Month can't be empty",
+        }),
+        endingMonth: z.string().optional(), // Allow empty value
       })
     )
     .query(async ({ ctx, input }) => {
-      const [year, month] = input.month.split("-").map(Number); // Convert "YYYY-MM" to numbers
+      const [year, month] = input.startingMonth.split("-").map(Number);
+
+      // If endingMonth is empty or not provided, use the current month
+      const currentDate = new Date();
+      const [endingYear, endingMonth] = input.endingMonth
+        ? input.endingMonth.split("-").map(Number)
+        : [currentDate.getUTCFullYear(), currentDate.getUTCMonth() + 1];
 
       const startDate = new Date(
         Date.UTC(year ?? 0, (month ?? 1) - 1, 1, 0, 0, 0, 0)
       ); // 1st of month, UTC 00:00:00
+
       const endDate = new Date(
-        Date.UTC(year ?? 0, month ?? 0, 0, 23, 59, 59, 999)
+        Date.UTC(endingYear ?? 0, endingMonth ?? 0, 0, 23, 59, 59, 999)
       ); // Last day of month, UTC 23:59:59
 
       console.log("start date", startDate.toISOString());
@@ -108,6 +142,7 @@ export const paymentRouter = createTRPCRouter({
           },
           id: true,
           paymentDate: true,
+          paymentFor: true,
           status: true,
           student: {
             select: {
@@ -118,6 +153,7 @@ export const paymentRouter = createTRPCRouter({
           },
         },
       });
+
       return payments;
     }),
 });

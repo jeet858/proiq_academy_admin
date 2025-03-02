@@ -19,6 +19,8 @@ const config = {
     "@typescript-eslint/prefer-nullish-coalescing": "warn",
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/require-await": "warn",
+    "typescript-eslint/no-unsafe-return": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-misused-promises": "warn",
     "@typescript-eslint/consistent-type-imports": [
       "warn",

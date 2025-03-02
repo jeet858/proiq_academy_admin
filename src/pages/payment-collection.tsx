@@ -14,6 +14,7 @@ interface PaymentCollectionForm {
   amountPaid: string;
   paymentDate: string;
   status: string;
+  paymentFor: string;
 }
 const PaymentCollection: React.FunctionComponent = () => {
   const [errorString, setErrorString] = useState("");
@@ -58,7 +59,13 @@ const PaymentCollection: React.FunctionComponent = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "paymentFor" && { studentId: "" }), // Reset studentId when paymentFor changes
+    }));
   };
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -114,6 +121,26 @@ const PaymentCollection: React.FunctionComponent = () => {
           className="grid w-4/5 grid-cols-1 gap-x-4 self-center py-7 lg:grid-cols-2"
           onSubmit={handleSubmit}
         >
+          <select
+            className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
+              formData.paymentFor == null || formData.paymentFor == ""
+                ? "text-gray-400"
+                : "text-black"
+            }`}
+            name="paymentFor"
+            onChange={handleChange}
+            value={formData.paymentFor}
+          >
+            <option selected disabled value="">
+              Payment For
+            </option>
+            <option value="Course Fees" className="text-black">
+              Course Fees
+            </option>
+            <option value="Readdmission Fees" className="text-black">
+              Readdmission Fees
+            </option>
+          </select>
           <select
             className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
               formData.centreId == null || formData.centreId == ""
@@ -174,11 +201,16 @@ const PaymentCollection: React.FunctionComponent = () => {
             name="studentId"
             onChange={handleChange}
           >
-            <option selected disabled>
+            <option selected disabled value="">
               Select Student
             </option>
-            {students.map((student) => {
-              return (
+            {students
+              ?.filter((student) =>
+                formData.paymentFor === "Readdmission Fees"
+                  ? student.readdmission
+                  : true
+              )
+              .map((student) => (
                 <option
                   value={student.studentId}
                   className="text-black"
@@ -186,8 +218,7 @@ const PaymentCollection: React.FunctionComponent = () => {
                 >
                   Name: {student.name}, Parent: {student.parentName}
                 </option>
-              );
-            })}
+              ))}
           </select>
           <select
             className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
@@ -218,7 +249,6 @@ const PaymentCollection: React.FunctionComponent = () => {
             onChange={handleChange}
             className="h-12 w-full min-w-full justify-self-center border-b border-b-[#919191] pl-1 focus:outline-none lg:justify-self-end"
           />
-
           <input
             name="amountPaid"
             onChange={handleChange}

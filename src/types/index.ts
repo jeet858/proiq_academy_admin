@@ -105,6 +105,7 @@ export const PaymentInput = z.object({
   status: z.enum(["PAID", "PENDING", "PARTIAL"], {
     required_error: "Payment status can't be empty",
   }),
+  paymentFor: z.string({ required_error: "Payment Type can't be empty" }),
 });
 export const MonthlyPaymentInput = z.object({
   centreId: z.string({ required_error: "Centre ID can't be empty" }),
@@ -113,4 +114,31 @@ export const MonthlyPaymentInput = z.object({
   month: z
     .string({ required_error: "Month can't be empty" })
     .regex(/^\d{4}-\d{2}$/),
+});
+export const ReaddmissionInput = z.object({
+  studentData: z.array(
+    z.object({
+      studentId: z.string({ required_error: "Student ID can't be empty" }),
+      readdmission: z
+        .boolean({
+          required_error: "Readdmission can't be empty",
+        })
+        .optional(),
+      readdmissionPaymentStatus: z
+        .boolean({
+          required_error: "Readdmission Payment Status can't be empty",
+        })
+        .optional(),
+    })
+  ),
+  readdmissionPaymentAmount: z.number({
+    required_error: "Readdmission Payment Amount can't be empty",
+  }),
+  centreId: z.string({ required_error: "Centre ID can't be empty" }),
+  courseId: z.string({
+    required_error: "Course Id can't be empty",
+  }),
+  readdmissionCourseId: z.string({
+    required_error: "Readdmission Course Id can't be empty",
+  }),
 });

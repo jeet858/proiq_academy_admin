@@ -36,27 +36,29 @@ model Demo{
 }
 
 model Student{
-    studentId       String @id @default(uuid())
-    name            String
-    address         String
-    parentName      String
-    parentOccupation String
-    parentContactNumber1   String
-    parentContactNumber2 String?
-    idProof         String
-    idProofType         String
-    centreId        String
-    courseDuration  String
-    classDays String[]
-    classTiming String
-    imageUrl    String
-    readdmission    Boolean
-    centre          Centre @relation(fields: [centreId], references: [id], onDelete: Cascade)
-    attendance      Attendance[]
-    payments        Payment[]
-    course Course[]
-    createdAt DateTime @default(now()) @db.Timestamptz(5)
-    updatedAt          DateTime  @updatedAt @db.Timestamptz(5)
+    studentId                       String @id @default(uuid())
+    name                            String
+    address                         String
+    parentName                      String
+    parentOccupation                String
+    parentContactNumber1            String
+    parentContactNumber2            String?
+    idProof                         String
+    idProofType                     String
+    centreId                        String
+    courseDuration                  String
+    classDays                       String[]
+    classTiming                     String
+    imageUrl                        String
+    readdmission                    Boolean
+    readdmissionPaymentStatus       Boolean
+    readdmissionCourseId            String?
+    centre                          Centre @relation(fields: [centreId], references: [id], onDelete: Cascade)
+    attendance                      Attendance[]
+    payments                        Payment[]
+    course                          Course[]
+    createdAt                       DateTime @default(now()) @db.Timestamptz(5)
+    updatedAt                       DateTime  @updatedAt @db.Timestamptz(5)
 }
 
 
@@ -82,15 +84,15 @@ model Centre {
 }
 
 model Attendance {
-    id        String   @id @default(uuid()) // Unique identifier
-    studentId String
-    courseId   String
-    centreId  String
-    date      DateTime // Date of the class
-    status    AttendanceStatus // Enum for attendance status
-    student   Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
-    course     Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-    centre    Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
+    id                  String   @id @default(uuid()) // Unique identifier
+    studentId           String
+    courseId            String
+    centreId            String
+    date                DateTime // Date of the class
+    status              AttendanceStatus // Enum for attendance status
+    student             Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+    course              Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+    centre              Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
     @@unique([studentId, courseId, date]) // A student can only have one attendance record per class per date
 
 }
@@ -102,6 +104,7 @@ model Payment {
     courseId    String
     amountPaid  Float    // Amount paid by the student
     paymentDate DateTime // Date of payment
+    paymentFor  String 
     status      PaymentStatus // Enum: Paid, Pending, Partial
     student     Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
     centre      Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
@@ -120,3 +123,4 @@ enum PaymentStatus {
     PENDING
     PARTIAL
 }
+

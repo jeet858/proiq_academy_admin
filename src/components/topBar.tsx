@@ -129,6 +129,14 @@ const TopBar: React.FunctionComponent = () => {
                         Update Student Reg.
                       </Link>
                     </li>
+                    <li className="pb-2">
+                      <Link
+                        href="readdmission"
+                        className="relative flex gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"
+                      >
+                        Student Readdmission
+                      </Link>
+                    </li>
                     <li className="pb-4">
                       <button
                         className="relative flex w-full gap-3 py-3 pl-5 hover:rounded-[45px] hover:bg-[#FABA0999]"

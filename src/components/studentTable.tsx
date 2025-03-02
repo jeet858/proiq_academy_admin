@@ -10,6 +10,7 @@ interface StudentData {
   payments: {
     amountPaid: number;
     paymentDate: Date;
+    paymentFor: string;
   }[];
   name: string;
   imageUrl: string;
@@ -26,6 +27,8 @@ interface StudentData {
   idProofType: string;
   courseDuration: string;
   readdmission: boolean;
+  readdmissionCourseId: string | null;
+  readdmissionPaymentStatus: boolean;
 }
 
 interface CourseTableProps {
@@ -89,7 +92,9 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
               <th className="border p-2">Course</th>
               <th className="border p-2">Class Days</th>
               <th className="border p-2">Readdmission</th>
+              <th className="border p-2">Readdmission Payment Status</th>
               <th className="border p-2">Last Payment</th>
+              <th className="border p-2">Last Payment For</th>
               <th className="border p-2">Last Payment Date</th>
             </tr>
           </thead>
@@ -101,17 +106,20 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
 
               const isMoreThanOneMonth =
                 paymentDate && paymentDate > oneMonthAgo;
-              console.log(
-                "For Payment Date",
-                paymentDate,
-                "isMoreThanOneMonth",
-                isMoreThanOneMonth
-              );
+
+              const readdmissionPaymentPending =
+                (student.readdmission ?? false) &&
+                !(student.readdmissionPaymentStatus ?? false);
+              console.log(student.name, isMoreThanOneMonth);
               return (
                 <tr
                   key={index}
                   className={`border-b text-center ${
-                    isMoreThanOneMonth ? "text-green-600" : "text-red-600"
+                    !isMoreThanOneMonth ||
+                    (student.readdmission == true &&
+                      student.readdmissionPaymentStatus == false)
+                      ? "text-red-600"
+                      : "text-green-600"
                   }`}
                 >
                   <td className="border p-2">
@@ -134,7 +142,17 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
                     {student.readdmission ? "True" : "False"}
                   </td>
                   <td className="border p-2">
+                    {student.readdmission
+                      ? student.readdmissionPaymentStatus
+                        ? "PAID"
+                        : "PENDING"
+                      : "N/A"}
+                  </td>
+                  <td className="border p-2">
                     {student?.payments[0]?.amountPaid || "N/A"}
+                  </td>
+                  <td className="border p-2">
+                    {student?.payments[0]?.paymentFor || "N/A"}
                   </td>
                   <td className="border p-2">
                     {student?.payments[0]?.paymentDate?.toDateString() || "N/A"}

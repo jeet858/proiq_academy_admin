@@ -11,7 +11,9 @@ interface PaymentStatusForm {
   studentId: string;
   centreId: string;
   courseId: string;
-  month: string;
+  paymentFor: string;
+  startingMonth: string;
+  endingMonth: string;
 }
 interface PaymentData {
   student: {
@@ -30,6 +32,7 @@ interface PaymentData {
   status: $Enums.PaymentStatus;
   amountPaid: number;
   paymentDate: Date;
+  paymentFor: string;
   id: string;
 }
 const PaymentStatus: React.FunctionComponent = () => {
@@ -37,7 +40,8 @@ const PaymentStatus: React.FunctionComponent = () => {
   const [formData, setFormData] = useState<PaymentStatusForm>({
     centreId: "",
     courseId: "",
-    month: "",
+    startingMonth: "",
+    endingMonth: "",
   } as PaymentStatusForm);
   const [filteredPaymentData, setFilteredPaymentData] =
     useState<PaymentData[]>();
@@ -71,7 +75,8 @@ const PaymentStatus: React.FunctionComponent = () => {
     isError: isPaymentDataError,
     isLoading: isPaymentDataLoading,
   } = api.payment.getAllMonthlyPayments.useQuery({
-    month: formData.month,
+    startingMonth: formData.startingMonth,
+    endingMonth: formData.endingMonth,
   });
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -87,17 +92,20 @@ const PaymentStatus: React.FunctionComponent = () => {
           (!formData.courseId || payment.course.id === formData.courseId) &&
           (!formData.centreId || payment.centre.id === formData.centreId) &&
           (!formData.studentId ||
-            payment.student.studentId === formData.studentId)
+            payment.student.studentId === formData.studentId) &&
+          (!formData.paymentFor || payment.paymentFor === formData.paymentFor)
         );
       });
-      console.log(filteredData);
+      console.log("filteredData", filteredData);
       setFilteredPaymentData(filteredData);
     }
   }, [
     formData.courseId,
     formData.centreId,
     formData.studentId,
-    formData.month,
+    formData.startingMonth,
+    formData.paymentFor,
+    paymentData,
   ]);
   if (status == "unauthenticated") {
     return (
@@ -144,6 +152,26 @@ const PaymentStatus: React.FunctionComponent = () => {
           </Link>
         </div>
         <div className="grid w-4/5 grid-cols-1 gap-x-4 self-center py-7 lg:grid-cols-2">
+          <select
+            className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
+              formData.paymentFor == null || formData.paymentFor == ""
+                ? "text-gray-400"
+                : "text-black"
+            }`}
+            name="paymentFor"
+            onChange={handleChange}
+            value={formData.paymentFor}
+          >
+            <option selected disabled value="">
+              Payment For
+            </option>
+            <option value="Course Fees" className="text-black">
+              Course Fees
+            </option>
+            <option value="Readdmission Fees" className="text-black">
+              Readdmission Fees
+            </option>
+          </select>
           <select
             className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
               formData.centreId == null || formData.centreId == ""
@@ -194,14 +222,47 @@ const PaymentStatus: React.FunctionComponent = () => {
               );
             })}
           </select>
-          <input
-            placeholder="Select Date"
-            type="month"
-            name="month"
-            onChange={handleChange}
-            value={formData.month}
-            className="h-12 w-full min-w-full justify-self-center border-b border-b-[#919191] pl-1 focus:outline-none lg:justify-self-end"
-          />
+          <div className="relative w-full">
+            <label
+              htmlFor="startingMonth"
+              className={`absolute left-1 top-1/2 -translate-y-1/2 transform text-gray-400 transition-all ${
+                formData.startingMonth
+                  ? "top-2 text-xs text-black"
+                  : "bg-white text-base"
+              }`}
+            >
+              {formData.startingMonth ? "" : "Select Starting Month"}
+            </label>
+            <input
+              id="startingMonth"
+              type="month"
+              name="startingMonth"
+              onChange={handleChange}
+              value={formData.startingMonth}
+              className="h-12 w-full border-b border-b-[#919191] pl-1 focus:outline-none"
+            />
+          </div>
+          <div className="relative w-full">
+            <label
+              htmlFor="endingMonth"
+              className={`text-g ray-400 absolute left-1 top-1/2 -translate-y-1/2  transform text-gray-400  transition-all ${
+                formData.endingMonth
+                  ? "top-2 text-xs text-black"
+                  : "bg-white text-base"
+              }`}
+            >
+              {formData.endingMonth ? "" : "Select Ending Month"}
+            </label>
+            <input
+              placeholder="Select Ending Month"
+              type="month"
+              name="endingMonth"
+              onChange={handleChange}
+              value={formData.endingMonth}
+              className=" h-12 w-full min-w-full justify-self-center border-b border-b-[#919191] pl-1 focus:outline-none lg:justify-self-end"
+            />
+          </div>
+
           <select
             className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
               formData.studentId == null || formData.studentId == ""
@@ -235,7 +296,7 @@ const PaymentStatus: React.FunctionComponent = () => {
               setFormData({
                 centreId: "",
                 courseId: "",
-                month: "",
+                startingMonth: "",
               } as PaymentStatusForm);
               setFilteredPaymentData(undefined);
               console.log(formData);
@@ -244,7 +305,7 @@ const PaymentStatus: React.FunctionComponent = () => {
             Clear
           </button>
         </div>
-        <div className="mt-4 flex w-4/5 flex-col justify-start gap-x-6 gap-y-4 self-center lg:w-4/5 lg:flex-row">
+        <div className="mt-4 flex w-4/5 flex-col justify-start gap-x-6 gap-y-4 self-center pb-4 lg:w-4/5 lg:flex-row">
           {filteredPaymentData ? (
             <PaymentTable payments={filteredPaymentData} />
           ) : (
