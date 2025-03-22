@@ -29,16 +29,16 @@ const TopBar: React.FunctionComponent = () => {
       {/* profile detail section */}
       <div className="flex h-full items-center justify-end">
         {/* Notification Block */}
-        <div className="w-[27px]">
+        {/* <div className="w-[27px]">
           <Image src={notifications} alt="Notifications" />
-        </div>
+        </div> */}
         {/* Profile-icon block */}
-        <div className="ml-4 mr-1 w-[27px]">
+        {/* <div className="ml-4 mr-1 w-[27px]">
           <Image src={faCircleUser} alt="User" />
-        </div>
+        </div> */}
         {/* name-designation block */}
         <div className="flex flex-col px-[1%] font-medium text-[#202B5D]">
-          <div className="text-lg">
+          <div className="text-base md:text-lg">
             {session?.user.name}, {session?.user.email}
           </div>
           <div className="text-base">{session?.user.role}</div>
