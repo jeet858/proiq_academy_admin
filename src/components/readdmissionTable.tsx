@@ -170,7 +170,7 @@ const ReaddmissionTable: React.FunctionComponent<ReaddmissionTableProps> = ({
             {localData?.map((student, index) => (
               <tr key={index} className="border-b border-dashed text-center">
                 <td className="border border-dashed p-2">
-                  {student.studentId.slice(0, 8)}
+                  {student.studentId}
                 </td>
                 <td className="border border-dashed p-2">{student.name}</td>
                 <td className="border border-dashed p-2">

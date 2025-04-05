@@ -10,7 +10,7 @@ export async function uploadFile(
   }
 
   // Create a unique filename
-  const fileName = `${Date.now()}-${userName}`;
+  const fileName = `${Date.now()}-${userName.trim()}`;
 
   // Upload to Supabase Storage
   const { data, error } = await supabase.storage

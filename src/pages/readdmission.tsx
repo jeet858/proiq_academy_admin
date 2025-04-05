@@ -167,14 +167,6 @@ const Readdmission: React.FunctionComponent = () => {
             centreId={formData.centreId}
           />
         ) : null}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            console.log(students);
-          }}
-        >
-          click me
-        </button>
       </div>
     </MainPageTemplate>
   );

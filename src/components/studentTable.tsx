@@ -98,6 +98,7 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
             <th className="border p-2">Last Payment</th>
             <th className="border p-2">Last Payment For</th>
             <th className="border p-2">Last Payment Date</th>
+            <th className="border p-2">Student Status</th>
           </tr>
         </thead>
         <tbody className="divide-y">
@@ -116,11 +117,10 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
               <tr
                 key={index}
                 className={`border-b text-center ${
-                  !isMoreThanOneMonth ||
-                  student.status !== $Enums.UserStatus.CONTINUE ||
-                  (student.readdmission == true &&
-                    student.readdmissionPaymentStatus == false)
+                  !isMoreThanOneMonth || readdmissionPaymentPending
                     ? "text-red-600"
+                    : student.status !== $Enums.UserStatus.CONTINUE
+                    ? "text-yellow-400"
                     : "text-green-600"
                 }`}
               >
@@ -177,6 +177,7 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
                 <td className="border p-2">
                   {student?.payments[0]?.paymentDate?.toDateString() || "N/A"}
                 </td>
+                <td className="border p-2">{student?.status || "N/A"}</td>
               </tr>
             );
           })}

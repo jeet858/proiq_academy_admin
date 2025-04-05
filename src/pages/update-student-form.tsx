@@ -30,6 +30,8 @@ interface StudentForm {
 }
 export default function UpdateStudentForm() {
   const [formData, setFormData] = useState<StudentForm>({} as StudentForm);
+  const [firstRender, setFirstRender] = useState(false);
+
   const router = useRouter();
   const { studentId } = router.query ?? " ";
   const {
@@ -114,7 +116,12 @@ export default function UpdateStudentForm() {
     centreName: formData?.centreId ?? "",
   });
   useEffect(() => {
-    if (studentData && studentData !== null && studentData !== undefined) {
+    if (
+      !firstRender &&
+      studentData &&
+      studentData !== null &&
+      studentData !== undefined
+    ) {
       setImage(studentData.imageUrl);
       const formattedDob = studentData.dob
         ? new Date(studentData.dob).toISOString().split("T")[0]
@@ -124,6 +131,7 @@ export default function UpdateStudentForm() {
         dob: formattedDob ?? "",
         parentContactNumber2: studentData.parentContactNumber2 ?? "",
       });
+      setFirstRender(true);
     }
   }, [studentData]);
   if (status == "unauthenticated") {

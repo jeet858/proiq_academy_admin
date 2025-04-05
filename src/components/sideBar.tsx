@@ -91,7 +91,7 @@ const SideBar: React.FunctionComponent = () => {
                     : ""
                 }`}
               >
-                Student Readdmission
+                Student Readmission
               </Link>
             </li>
             <li className="pb-2">
