@@ -63,7 +63,7 @@ model Student{
     payments                        Payment[]
     course                          Course[]
     createdAt                       DateTime @default(now()) @db.Timestamptz(5)
-    updatedAt                       DateTime  @updatedAt @db.Timestamptz(5)
+    updatedAt                       DateTime @updatedAt @db.Timestamptz(5)
 }
 
 
@@ -110,6 +110,7 @@ model Payment {
     amountPaid  Float    // Amount paid by the student
     paymentDate DateTime // Date of payment
     paymentFor  String 
+    dateTime        DateTime @default(now()) @db.Timestamptz(5)
     status      PaymentStatus // Enum: Paid, Pending, Partial
     student     Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
     centre      Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)

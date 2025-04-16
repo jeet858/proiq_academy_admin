@@ -243,8 +243,8 @@ const PaymentCollection: React.FunctionComponent = () => {
             </option>
           </select>
           <input
-            placeholder="Select Date"
-            type="datetime-local"
+            placeholder="Select Month"
+            type="month"
             name="paymentDate"
             onChange={handleChange}
             className="h-12 w-full min-w-full justify-self-center border-b border-b-[#919191] pl-1 focus:outline-none lg:justify-self-end"
