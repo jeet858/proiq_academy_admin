@@ -103,18 +103,19 @@ model Attendance {
 }
 
 model Payment {
-    id          String   @id @default(uuid()) 
-    studentId   String
-    centreId    String
-    courseId    String
-    amountPaid  Float    // Amount paid by the student
-    paymentDate DateTime // Date of payment
-    paymentFor  String 
+    id              String   @id @default(uuid()) 
+    studentId       String
+    centreId        String
+    courseId        String
+    amountPaid      Float    // Amount paid by the student
+    paymentDate     DateTime // Date of payment
+    paymentFor      String 
+    paymentMonths   DateTime[]
     dateTime        DateTime @default(now()) @db.Timestamptz(5)
-    status      PaymentStatus // Enum: Paid, Pending, Partial
-    student     Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
-    centre      Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
-    course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+    status          PaymentStatus // Enum: Paid, Pending, Partial
+    student         Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+    centre          Centre   @relation(fields: [centreId], references: [id], onDelete: Cascade)
+    course          Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
     @@unique([studentId, paymentDate,courseId,centreId]) // A student can only have one payment record per date
 }
 

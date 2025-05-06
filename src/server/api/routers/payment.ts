@@ -6,22 +6,30 @@ export const paymentRouter = createTRPCRouter({
     .input(PaymentInput)
     .mutation(async ({ ctx, input }) => {
       if (input.paymentFor === "Course Fees") {
+        const latestDate = input.paymentMonths.reduce((latest, current) =>
+          current > latest ? current : latest
+        );
+        const sortedDates = input.paymentMonths.sort(
+          (a, b) => a.getTime() - b.getTime()
+        );
         return await ctx.prisma.payment.create({
           data: {
             amountPaid: input.amountPaid,
-            paymentDate: input.paymentDate,
+            paymentDate: latestDate,
             status: input.status,
             centreId: input.centreId,
             courseId: input.courseId,
             studentId: input.studentId,
             paymentFor: input.paymentFor,
+            paymentMonths: sortedDates,
           },
         });
       } else {
+        const date = new Date();
         const payment = ctx.prisma.payment.create({
           data: {
             amountPaid: input.amountPaid,
-            paymentDate: input.paymentDate,
+            paymentDate: date,
             status: input.status,
             centreId: input.centreId,
             courseId: input.courseId,
@@ -144,6 +152,8 @@ export const paymentRouter = createTRPCRouter({
           paymentDate: true,
           paymentFor: true,
           status: true,
+          paymentMonths: true,
+          dateTime: true,
           student: {
             select: {
               studentId: true,

@@ -33,6 +33,8 @@ interface PaymentData {
   amountPaid: number;
   paymentDate: Date;
   paymentFor: string;
+  paymentMonths: Date[];
+  dateTime: Date;
   id: string;
 }
 const PaymentStatus: React.FunctionComponent = () => {

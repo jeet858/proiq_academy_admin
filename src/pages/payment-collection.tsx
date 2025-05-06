@@ -2,6 +2,7 @@ import { Modal } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
+import CustomMonthDropdown from "~/components/customMonthDropdown";
 import ErrorScreen from "~/components/errorScreen";
 import LoadingScreen from "~/components/loadingScreen";
 import SuccessPopup from "~/components/successPopup";
@@ -12,9 +13,9 @@ interface PaymentCollectionForm {
   centreId: string;
   courseId: string;
   amountPaid: string;
-  paymentDate: string;
   status: string;
   paymentFor: string;
+  paymentMonths: Date[];
 }
 const PaymentCollection: React.FunctionComponent = () => {
   const [errorString, setErrorString] = useState("");
@@ -73,7 +74,7 @@ const PaymentCollection: React.FunctionComponent = () => {
     const formattedData = {
       ...formData,
       amountPaid: Number(formData.amountPaid), // Ensure it's a number
-      paymentDate: new Date(formData.paymentDate), // Convert string to Date
+
       status: formData.status as "PAID" | "PENDING" | "PARTIAL", // Type assertion
     };
     console.log("Form submitted:", formattedData);
@@ -242,13 +243,13 @@ const PaymentCollection: React.FunctionComponent = () => {
               PENDING
             </option>
           </select>
-          <input
-            placeholder="Select Month"
-            type="month"
-            name="paymentDate"
-            onChange={handleChange}
-            className="h-12 w-full min-w-full justify-self-center border-b border-b-[#919191] pl-1 focus:outline-none lg:justify-self-end"
-          />
+          {formData.paymentFor !== "Readdmission Fees" && (
+            <CustomMonthDropdown
+              setSelectedValues={(dateArray) => {
+                setFormData({ ...formData, paymentMonths: dateArray });
+              }}
+            />
+          )}
           <input
             name="amountPaid"
             onChange={handleChange}

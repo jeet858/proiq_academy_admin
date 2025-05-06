@@ -134,11 +134,13 @@ export const PaymentInput = z.object({
   centreId: z.string({ required_error: "Centre ID can't be empty" }),
   courseId: z.string({ required_error: "Course ID can't be empty" }),
   amountPaid: z.number({ required_error: "Amount paid can't be empty" }),
-  paymentDate: z.date({ required_error: "Payment date can't be empty" }),
   status: z.enum(["PAID", "PENDING", "PARTIAL"], {
     required_error: "Payment status can't be empty",
   }),
   paymentFor: z.string({ required_error: "Payment Type can't be empty" }),
+  paymentMonths: z.array(
+    z.date({ required_error: "Payment Months can't be empty" })
+  ),
 });
 export const MonthlyPaymentInput = z.object({
   centreId: z.string({ required_error: "Centre ID can't be empty" }),

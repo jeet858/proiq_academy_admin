@@ -19,6 +19,8 @@ interface Payment {
   amountPaid: number;
   paymentFor: string;
   paymentDate: Date;
+  dateTime: Date;
+  paymentMonths: Date[];
   id: string;
 }
 const PaymentTable = ({ payments }: { payments: Payment[] }) => {
@@ -69,6 +71,7 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
             <th className="border border-[#FCD56C] p-2">Subject</th>
             <th className="border border-[#FCD56C] p-2">Centre</th>
             <th className="border border-[#FCD56C] p-2">Payment Date</th>
+            <th className="border border-[#FCD56C] p-2">Payment Months</th>
             <th className="border border-[#FCD56C] p-2">Payment For</th>
             <th className="border border-[#FCD56C] p-2">Amount</th>
             <th className="border border-[#FCD56C] p-2">Status</th>
@@ -96,7 +99,17 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
                 {payment.centre.name}
               </td>
               <td className="border border-[#FCD56C] p-2">
-                {payment.paymentDate.toISOString().split("T")[0]}
+                {payment.dateTime.toISOString().split("T")[0]}
+              </td>
+              <td className="border border-[#FCD56C] p-2">
+                {payment.paymentMonths
+                  .map(
+                    (date) =>
+                      `${date.toLocaleString("default", {
+                        month: "short",
+                      })}/${date.getFullYear()}`
+                  )
+                  .join(", ")}
               </td>
               <td className="border border-[#FCD56C] p-2">
                 {payment.paymentFor}
