@@ -49,14 +49,11 @@ export default function UpdateUser() {
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     const dob = new Date(formData.dob);
+
     if (file) {
       try {
-        const imageUrl = await uploadFile(
-          file,
-          formData.name,
-          "student-images"
-        );
-        await deleteImage(formData.imageUrl, "student-images");
+        const imageUrl = await uploadFile(file, formData.name, "user-images");
+        await deleteImage(formData.imageUrl, "user-images");
         if (imageUrl) {
           updateUser.mutate({ ...formData, imageUrl: imageUrl, dob: dob });
         }
@@ -64,7 +61,7 @@ export default function UpdateUser() {
         setErrorString("Failed to upload file");
       }
     } else {
-      updateUser.mutate({ ...formData, imageUrl: "", dob: dob });
+      updateUser.mutate({ ...formData, dob: dob });
     }
   };
   const handleLocalFileSelection = (
@@ -332,6 +329,7 @@ export default function UpdateUser() {
           <SuccessPopup
             onClick={() => {
               setIsSuccess(false);
+              router.replace("/user-list");
             }}
             message="User updated succesfully"
           />

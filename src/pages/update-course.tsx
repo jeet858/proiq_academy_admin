@@ -175,6 +175,7 @@ const UpdateCourse: React.FunctionComponent = () => {
       >
         <SuccessPopup
           onClick={() => {
+            router.replace("/course-list");
             setIsSuccess(false);
           }}
           message="Course updated succesfully"

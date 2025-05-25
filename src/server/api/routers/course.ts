@@ -199,14 +199,12 @@ export const courseRouter = createTRPCRouter({
   update: protectedProcedure
     .input(UpdateCourseInput)
     .mutation(async ({ ctx, input }) => {
-      const id = await generateCustomCourseId();
       const emails = input.facultyNames.map((str) => str.split(", ").pop());
       return ctx.prisma.course.update({
         where: {
           id: input.id,
         },
         data: {
-          id: id,
           name: input.name,
           centre: {
             connect: input.centreNames.map((centreName) => ({

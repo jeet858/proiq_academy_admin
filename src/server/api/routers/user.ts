@@ -92,7 +92,7 @@ export const userRouter = createTRPCRouter({
         },
       },
       orderBy: {
-        userType: "asc",
+        id: "asc",
       },
     });
     return users;
