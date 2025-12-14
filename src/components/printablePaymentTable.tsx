@@ -158,4 +158,5 @@ const PrintablePaymentTable = forwardRef<
   );
 });
 
+PrintablePaymentTable.displayName = "PrintablePaymentTable";
 export default PrintablePaymentTable;
