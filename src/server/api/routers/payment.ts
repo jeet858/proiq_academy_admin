@@ -148,6 +148,7 @@ export const paymentRouter = createTRPCRouter({
               name: true,
             },
           },
+
           id: true,
           paymentDate: true,
           paymentFor: true,
@@ -159,6 +160,9 @@ export const paymentRouter = createTRPCRouter({
               studentId: true,
               name: true,
               parentName: true,
+              address: true,
+              parentContactNumber1: true,
+              parentContactNumber2: true,
             },
           },
         },

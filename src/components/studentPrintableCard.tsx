@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import bg from "../../public/print-bg.png";
+import bg from "../../public/student-print-bg.jpg";
 import React, { forwardRef } from "react";
 
 export interface Props {
+  id?:string;
   name: string;
   address: string;
   parentName: string;
@@ -14,6 +15,7 @@ export interface Props {
   idProof: string;
   idProofType: string;
   centreId: string;
+  centreName?: string;
   courseNames: string[];
   classDays: string[];
   readdmission: boolean;
@@ -38,6 +40,8 @@ const PrintableStudentCard = forwardRef<HTMLDivElement, Props>(
       readdmission,
       imageUrl,
       dob,
+      id,
+      centreName
     },
     ref
   ) => {
@@ -50,20 +54,16 @@ const PrintableStudentCard = forwardRef<HTMLDivElement, Props>(
           <Image
             src={bg}
             alt="print bg"
-            className="fixed z-0  max-h-full w-full "
+            className="fixed z-0 max-h-full w-full "
           />
-          <h1 className="pb-3 text-center text-xl font-bold top-32 relative">
-            Student Registration Details
-          </h1>
-          <div className="z-10 mt-6 grid grid-cols-3 gap-2 left-32 top-32 relative">
+          <div className="z-10 mt-6 grid grid-cols-3 gap-2 left-20 top-56 relative">
             {/* LEFT SECTION */}
             <div className="z-10 col-span-2 space-y-2">
-
               <p className="text-md">
-                <strong>Full Name:</strong> {name}
+                <strong>Id:</strong> {id}
               </p>
               <p className="text-md">
-                <strong>Address:</strong> {address}
+                <strong>Full Name:</strong> {name}
               </p>
               <p className="text-md">
                 <strong>Date of Birth:</strong> {dob}
@@ -75,7 +75,7 @@ const PrintableStudentCard = forwardRef<HTMLDivElement, Props>(
                 <strong>ID Proof Number:</strong> {idProof}
               </p>
               <p className="text-md"> 
-                <strong>Centre:</strong> {centreId}
+                <strong>Centre:</strong> {centreName}
               </p>
 
               <p className="text-md">
@@ -99,6 +99,9 @@ const PrintableStudentCard = forwardRef<HTMLDivElement, Props>(
                 <strong>Parent Name:</strong> {parentName}
               </p>
               <p className="text-md">
+                <strong>Address:</strong> {address}
+              </p>
+              <p className="text-md">
                 <strong>Parent Occupation:</strong> {parentOccupation}
               </p >
               <p className="text-md">
@@ -113,7 +116,7 @@ const PrintableStudentCard = forwardRef<HTMLDivElement, Props>(
             </div>
 
             {/* PHOTO SECTION */}
-            <div className="z-10 flex justify-center relative right-48">
+            <div className="z-10 flex justify-center relative right-40">
               <div className="flex h-48 w-40 items-center justify-center overflow-hidden rounded border bg-gray-100">
                 {imageUrl ? (
                   <img

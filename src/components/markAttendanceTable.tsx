@@ -36,11 +36,32 @@ const MarkAttendanceTable: React.FunctionComponent<AttendanceTableProps> = ({
   date,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [localData, setLocalData] = useState<attendanceData[]>();
   const [firstRender, setFirstRender] = useState(false);
   const [isScuccess, setIsSuccess] = useState(false);
   const [errorString, setErrorString] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [localData, setLocalData] = useState<attendanceData[]>();
+  
+useEffect(() => {
+  if (!searchQuery.trim()) {
+    return;
+  }
+
+  const query = searchQuery.toLowerCase();
+
+  const matches = (item: attendanceData) =>
+    item.student.name.toLowerCase().includes(query)
+
+  const matched = attendance.filter(matches);
+  const unmatched = attendance.filter(item => !matches(item));
+
+  if(matched.length === 0){
+    return;
+  }
+
+  setLocalData([...matched, ...unmatched]);
+
+}, [searchQuery]);
 
   useEffect(() => {
     if (attendance && !firstRender) {
@@ -84,7 +105,7 @@ const MarkAttendanceTable: React.FunctionComponent<AttendanceTableProps> = ({
     if (localData) {
       await registerattendance.mutate(localData);
 
-      // console.log(localData);
+      console.log(localData);
     }
   };
   return (
@@ -130,7 +151,7 @@ const MarkAttendanceTable: React.FunctionComponent<AttendanceTableProps> = ({
             {localData?.map((student, index) => (
               <tr key={index} className="border-b border-dashed text-center">
                 <td className="border border-dashed p-2">
-                  {student.studentId.slice(0, 8)}
+                  {student.studentId}
                 </td>
                 <td className="border border-dashed p-2">
                   {student.student.name}

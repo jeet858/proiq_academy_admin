@@ -9,6 +9,9 @@ interface Payment {
     name: string;
     studentId: string;
     parentName: string;
+    address: string;
+    parentContactNumber1: string;
+    parentContactNumber2: string | null;
   };
   course: {
     id: string;
@@ -59,6 +62,7 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
   const handleReactPrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: "Payment Receipt",
+    // pageStyle: '@media print{ @page { size: A4 potratit; margin: 0; } body { margin: 0; } html, body { width: 210mm; height: 297mm;}}',
     onAfterPrint: () => {
       setSelectedPayment(null);
     },
@@ -70,8 +74,6 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
       handleReactPrint();
     }, 0);
   };
-
-
 
   return (
     <div
@@ -174,6 +176,10 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
           studentId={selectedPayment?.student.studentId ?? ""}
           subject={selectedPayment?.course.name ?? ""}
           date={selectedPayment?.dateTime.toISOString().split("T")[0] ?? ""}
+          address={selectedPayment?.student.address ?? ""}
+          contactNumber1={selectedPayment?.student.parentContactNumber1 ?? ""}
+          contactNumber2={selectedPayment?.student.parentContactNumber2 ?? ""}
+
         />
       )}
     </div>

@@ -71,6 +71,9 @@ export const courseRouter = createTRPCRouter({
             },
           },
         },
+        orderBy:{
+          name: "asc",
+        }
       });
       const courseNames: string[] = courses.map((course) => course.name);
       return courseNames;
@@ -89,6 +92,9 @@ export const courseRouter = createTRPCRouter({
               id: input.centreId,
             },
           },
+        },
+        orderBy: {
+          name: "asc",
         },
       });
       const courseNames: string[] = courses.map((course) => course.name);
@@ -111,6 +117,7 @@ export const courseRouter = createTRPCRouter({
             },
           },
         },
+        orderBy:{name: "asc"},
       });
 
       const courseNames: string[] = courses.map((course) => course.name);

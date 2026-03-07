@@ -194,31 +194,6 @@ const PaymentCollection: React.FunctionComponent = () => {
           </select>
           <select
             className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
-              formData.courseId == null || formData.courseId == ""
-                ? "text-gray-400"
-                : "text-black"
-            }`}
-            value={formData.courseId}
-            name="courseId"
-            onChange={handleChange}
-          >
-            <option selected disabled value="">
-              Select Course
-            </option>
-            {courses.map((course) => {
-              return (
-                <option
-                  value={course.id}
-                  className="text-black"
-                  key={course.id}
-                >
-                  {course.name}
-                </option>
-              );
-            })}
-          </select>
-          <select
-            className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
               formData.studentId == null || formData.studentId == ""
                 ? "text-gray-400"
                 : "text-black"
@@ -246,6 +221,32 @@ const PaymentCollection: React.FunctionComponent = () => {
                 </option>
               ))}
           </select>
+          <select
+            className={`h-12 w-full justify-self-center border-b border-b-[#919191] focus:outline-none ${
+              formData.courseId == null || formData.courseId == ""
+                ? "text-gray-400"
+                : "text-black"
+            }`}
+            value={formData.courseId}
+            name="courseId"
+            onChange={handleChange}
+          >
+            <option selected disabled value="">
+              Select Course
+            </option>
+            {courses.map((course) => {
+              return (
+                <option
+                  value={course.id}
+                  className="text-black"
+                  key={course.id}
+                >
+                  {course.name}
+                </option>
+              );
+            })}
+          </select>
+          
 
           <div className="w-full lg:col-span-2">
             {formData.paymentFor !== "Readdmission Fees" && (

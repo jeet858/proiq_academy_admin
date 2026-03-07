@@ -22,6 +22,9 @@ interface PaymentData {
     name: string;
     studentId: string;
     parentName: string;
+    address: string;
+    parentContactNumber1: string;
+    parentContactNumber2: string | null;
   };
   course: {
     id: string;
@@ -38,6 +41,7 @@ interface PaymentData {
   paymentMonths: Date[];
   dateTime: Date;
   id: string;
+
 }
 const PaymentStatus: React.FunctionComponent = () => {
   const [errorString, setErrorString] = useState("");

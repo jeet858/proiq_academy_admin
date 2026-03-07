@@ -9,3 +9,16 @@
 .scrollbar-hide {
   scrollbar-width: none;
 }
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 0;
+  }
+}

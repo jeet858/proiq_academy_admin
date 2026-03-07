@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintableStudentCard from "./studentPrintableCard";
+import Link from "next/link";
 
 interface StudentData {
   course: {
@@ -104,7 +105,7 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      <table className="mx-10 min-w-full table-auto border-collapse whitespace-nowrap">
+      <table className="min-w-full table-auto border-collapse whitespace-nowrap">
         <thead>
           <tr className="border-b border-dashed bg-gray-200">
             <th className="border p-2">ID</th>
@@ -220,6 +221,7 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
       </table>
       {selectedStudent && <PrintableStudentCard
         ref={printRef}
+        id={selectedStudent.studentId}
         name={selectedStudent.name}
         address={selectedStudent.address}
         parentName={selectedStudent.parentName}
@@ -229,6 +231,7 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
         idProof={selectedStudent.idProof}
         idProofType={selectedStudent.idProofType}
         centreId={selectedStudent.centreId}
+        centreName={selectedStudent.centre.name}
         courseNames={selectedStudent.course.map((c) => c.name)}
         classDays={selectedStudent.classDays}
         readdmission={selectedStudent.readdmission}

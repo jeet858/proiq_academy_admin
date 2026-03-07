@@ -127,7 +127,7 @@ export const attendanceRouter = createTRPCRouter({
               studentId_courseId_date: {
                 studentId: attendance.studentId,
                 courseId: attendance.courseId,
-                date: attendance.date.toISOString(),
+                date: attendance.date,
               },
             },
             update: {
