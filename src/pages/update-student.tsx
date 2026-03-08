@@ -55,7 +55,6 @@ const UpdateStudent: React.FunctionComponent = () => {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
   };
 
   if (status == "unauthenticated") {

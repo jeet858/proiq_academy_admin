@@ -75,7 +75,6 @@ const StudentList: React.FunctionComponent = () => {
     const isNameMatched =
       searchQuery.trim() === "" ||
       student.name.toLowerCase().includes(searchQuery.toLowerCase());
-    console.log("isNameMatched", isNameMatched);
     return isCentreSelected && isCourseSelected && isNameMatched;
   });
 
@@ -130,18 +129,6 @@ const StudentList: React.FunctionComponent = () => {
             </div>
           </div>
           <StudentTable students={filteredStudents} />
-        </div>
-        <div className="flex gap-x-6 self-center justify-self-center pb-7">
-          <button
-            type="button"
-            onClick={() => {
-              //   setFormData({} as ViewStudentForm);
-              console.log(searchQuery);
-            }}
-            className="rounded bg-[#202B5D] px-8 py-3 text-white"
-          >
-            Cancel
-          </button>
         </div>
       </div>
       <Modal

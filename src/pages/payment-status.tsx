@@ -49,7 +49,6 @@ const PaymentStatus: React.FunctionComponent = () => {
   const endingMonthRef = useRef<HTMLInputElement>(null);
 
   const handleStartingMonthLabelClick = () => {
-    console.log("Label clicked");
     startingMonthRef.current?.showPicker?.();
     startingMonthRef.current?.focus();
   };
@@ -258,9 +257,6 @@ const PaymentStatus: React.FunctionComponent = () => {
               type="month"
               name="startingMonth"
               onChange={handleChange}
-              onClick={() => {
-                console.log("clicked inp");
-              }}
               value={formData.startingMonth}
               className="h-12 w-full border-b border-b-[#919191] pl-1 focus:outline-none"
             />
@@ -330,7 +326,6 @@ const PaymentStatus: React.FunctionComponent = () => {
                 startingMonth: "",
               } as PaymentStatusForm);
               setFilteredPaymentData(undefined);
-              console.log(formData);
             }}
           >
             Clear

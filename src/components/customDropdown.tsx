@@ -35,8 +35,6 @@ const CustomDropdown: React.FunctionComponent<CustomDropdownProps> = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  console.log("dropdown values", values);
-  console.log("dropdown selected values", selectedValues);
 
   return (
     <div

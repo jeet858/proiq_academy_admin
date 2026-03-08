@@ -67,7 +67,6 @@ const UpdateCourse: React.FunctionComponent = () => {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     updateCourse.mutate({ ...formData, id: courseData!.id });
   };
 

@@ -126,8 +126,6 @@ const MarkAttendanceTable: React.FunctionComponent<AttendanceTableProps> = ({
     setIsProcessing(true);
     if (localData) {
       await registerattendance.mutate(localData);
-
-      console.log(localData);
     }
   };
   return (

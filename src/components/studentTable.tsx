@@ -138,7 +138,6 @@ const StudentTable: React.FunctionComponent<CourseTableProps> = ({
             const readdmissionPaymentPending =
               (student.readdmission ?? false) &&
               !(student.readdmissionPaymentStatus ?? false);
-            console.log(student.name, isMoreThanOneMonth);
             return (
               <tr
                 key={index}

@@ -37,7 +37,6 @@ const Login: React.FunctionComponent = () => {
       password: loginData.password,
       role: loginData.role,
     });
-    console.log(result);
     if (result?.error) {
       setError("Invalid email or password");
     } else {

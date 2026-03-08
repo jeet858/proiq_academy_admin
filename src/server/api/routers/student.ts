@@ -71,7 +71,7 @@ export const studentRouter = createTRPCRouter({
           address: input.address,
 
           course: {
-            connect: input.courseNames.map((courseName) => ({
+            set: input.courseNames.map((courseName) => ({
               name: courseName,
             })),
           },

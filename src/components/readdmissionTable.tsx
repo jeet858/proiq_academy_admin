@@ -46,7 +46,6 @@ const ReaddmissionTable: React.FunctionComponent<ReaddmissionTableProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    console.log("stu", students);
 
     const updatedStudents = students.map((student) => ({
       ...student,
@@ -104,13 +103,6 @@ const ReaddmissionTable: React.FunctionComponent<ReaddmissionTableProps> = ({
     setIsProcessing(true);
     if (localData) {
       await readdmission.mutate({
-        studentData: localData,
-        centreId: centreId,
-        courseId: previousCourseId,
-        readdmissionCourseId: newCourseId,
-        readdmissionPaymentAmount: payment,
-      });
-      console.log("localdata", {
         studentData: localData,
         centreId: centreId,
         courseId: previousCourseId,

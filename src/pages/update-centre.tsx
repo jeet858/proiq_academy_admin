@@ -43,7 +43,6 @@ const UpdateCentre: React.FunctionComponent = () => {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     updateCentre.mutate({ ...formData, id: centreData!.id });
   };
 

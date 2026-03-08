@@ -302,9 +302,8 @@ export default function UpdateUser() {
           <button
             type="button"
             onClick={() => {
-              // setFormData({} as StudentForm);
-              // router.back();
-              console.log("formData", formData);
+              setFormData({} as UserForm);
+              router.back();
             }}
             className="rounded bg-[#202B5D] px-8 py-3 text-white"
           >

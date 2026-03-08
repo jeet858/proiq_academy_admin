@@ -27,11 +27,9 @@ const authOptions: AuthOptions = {
       },
       async authorize(credentials, req) {
         const { email, password, role } = loginUserSchema.parse(credentials);
-        console.log(email, password, role);
         const user = await prisma.user.findUnique({
           where: { email: email.toLowerCase(), userType: role },
         });
-        console.log(user);
         if (!user) return null;
 
         const isPasswordCorrect = password === user.password;

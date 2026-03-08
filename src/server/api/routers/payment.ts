@@ -60,8 +60,6 @@ export const paymentRouter = createTRPCRouter({
         Date.UTC(year ?? 0, month ?? 0, 0, 23, 59, 59, 999)
       ); // Last day of month, UTC 23:59:59
 
-      console.log("start date", startDate.toISOString());
-      console.log("end date", endDate.toISOString());
 
       const payments = await ctx.prisma.payment.findMany({
         where: {
@@ -124,8 +122,6 @@ export const paymentRouter = createTRPCRouter({
         Date.UTC(endingYear ?? 0, endingMonth ?? 0, 0, 23, 59, 59, 999)
       ); // Last day of month, UTC 23:59:59
 
-      console.log("start date", startDate.toISOString());
-      console.log("end date", endDate.toISOString());
 
       const payments = await ctx.prisma.payment.findMany({
         where: {

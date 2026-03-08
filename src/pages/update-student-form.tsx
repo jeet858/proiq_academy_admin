@@ -1,6 +1,7 @@
 import { Modal } from "@mui/material";
 import { $Enums } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CustomDropdown from "~/components/customDropdown";
@@ -377,17 +378,14 @@ export default function UpdateStudentForm() {
           />
         </div>
         <div className="flex gap-x-6 self-center justify-self-center pb-7">
-          <button
-            type="button"
-            onClick={() => {
-              // setFormData({} as StudentForm);
-              // router.back();
-              console.log("formData", formData);
+          <Link
+            href={{
+              pathname: "/update-student",
             }}
             className="rounded bg-[#202B5D] px-8 py-3 text-white"
           >
             Cancel
-          </button>
+          </Link>
           <button
             type="submit"
             className="rounded bg-[#DCA200] px-8 py-3 text-white"

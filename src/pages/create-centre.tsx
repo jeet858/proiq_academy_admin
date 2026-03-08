@@ -26,7 +26,6 @@ const CreateCentre: React.FunctionComponent = () => {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     createCentre.mutate(formData);
   };
 
