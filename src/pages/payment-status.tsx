@@ -16,7 +16,7 @@ interface PaymentStatusForm {
   paymentFor: string;
   startingMonth: string;
   endingMonth: string;
-  paymentDate: string;
+  paymentMonth: string;
 }
 interface PaymentData {
   student: {
@@ -48,7 +48,7 @@ const PaymentStatus: React.FunctionComponent = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const startingMonthRef = useRef<HTMLInputElement>(null);
   const endingMonthRef = useRef<HTMLInputElement>(null);
-  const paymentDateRef = useRef<HTMLInputElement>(null);
+  const paymentMonthRef = useRef<HTMLInputElement>(null);
 
   const handleStartingMonthLabelClick = () => {
     startingMonthRef.current?.showPicker?.();
@@ -59,9 +59,9 @@ const PaymentStatus: React.FunctionComponent = () => {
     endingMonthRef.current?.showPicker?.();
     endingMonthRef.current?.focus();
   };
-  const handlePayementDateLabelClick = () => {
-    paymentDateRef.current?.showPicker?.();
-    paymentDateRef.current?.focus();
+  const handlePaymentMonthLabelClick = () => {
+    paymentMonthRef.current?.showPicker?.();
+    paymentMonthRef.current?.focus();
   };
 
   const [formData, setFormData] = useState<PaymentStatusForm>({
@@ -69,7 +69,7 @@ const PaymentStatus: React.FunctionComponent = () => {
     courseId: "",
     startingMonth: "",
     endingMonth: "",
-    paymentDate: "",
+    paymentMonth: "",
   } as PaymentStatusForm);
   const [filteredPaymentData, setFilteredPaymentData] =
     useState<PaymentData[]>();
@@ -115,10 +115,10 @@ const PaymentStatus: React.FunctionComponent = () => {
   useEffect(() => {
     if (paymentData) {
       const filteredData = paymentData.filter((payment) => {
-        const paymentDateMatches =
-          !formData.paymentDate ||
-          new Date(payment.dateTime).toISOString().split('T')[0] ===
-            new Date(formData.paymentDate).toISOString().split('T')[0];
+        const paymentMonthMatches =
+          !formData.paymentMonth ||
+          new Date(payment.dateTime).toISOString().slice(0, 7) ===
+            formData.paymentMonth;
 
         return (
           (!formData.courseId || payment.course.id === formData.courseId) &&
@@ -126,7 +126,7 @@ const PaymentStatus: React.FunctionComponent = () => {
           (!formData.studentId ||
             payment.student.studentId === formData.studentId) &&
           (!formData.paymentFor || payment.paymentFor === formData.paymentFor) &&
-          paymentDateMatches
+          paymentMonthMatches
         );
       });
       setFilteredPaymentData(filteredData);
@@ -137,7 +137,7 @@ const PaymentStatus: React.FunctionComponent = () => {
     formData.studentId,
     formData.startingMonth,
     formData.paymentFor,
-    formData.paymentDate,
+    formData.paymentMonth,
     paymentData,
   ]);
   const handlePrint = useReactToPrint({
@@ -330,21 +330,21 @@ const PaymentStatus: React.FunctionComponent = () => {
           <div className="relative w-full">
             <label
               className={`text-g ray-400 absolute left-1 top-1/2 -translate-y-1/2  transform text-gray-400  transition-all ${
-                formData.paymentDate
+                formData.paymentMonth
                   ? "top-2 text-xs text-black"
                   : "bg-white text-base"
               }`}
-              onClick={handlePayementDateLabelClick}
+              onClick={handlePaymentMonthLabelClick}
             >
-              {formData.paymentDate ? "" : "Select Payment Date"}
+              {formData.paymentMonth ? "" : "Select Payment Month"}
             </label>
             <input
-              ref={paymentDateRef}
-              id="paymentDate"
-              type="date"
-              name="paymentDate"
+              ref={paymentMonthRef}
+              id="paymentMonth"
+              type="month"
+              name="paymentMonth"
               onChange={handleChange}
-              value={formData.paymentDate}
+              value={formData.paymentMonth}
               className="h-12 w-full border-b border-b-[#919191] pl-1 focus:outline-none"
             />
           </div>
@@ -368,7 +368,7 @@ const PaymentStatus: React.FunctionComponent = () => {
                 paymentFor: "",
                 startingMonth: "",
                 endingMonth: "",
-                paymentDate: "",
+                paymentMonth: "",
               } as PaymentStatusForm);
               setFilteredPaymentData(undefined);
             }}

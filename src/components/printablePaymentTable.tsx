@@ -40,7 +40,7 @@ const PrintablePaymentTable = forwardRef<
       <style jsx global>{`
         @media print {
     @page {
-      size: A4 landscape;
+      size: A4 potrait;
       margin: 8mm;
     }
 
