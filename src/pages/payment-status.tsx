@@ -117,8 +117,7 @@ const PaymentStatus: React.FunctionComponent = () => {
       const filteredData = paymentData.filter((payment) => {
         const paymentMonthMatches =
           !formData.paymentMonth ||
-          new Date(payment.dateTime).toISOString().slice(0, 7) ===
-            formData.paymentMonth;
+          new Date(payment.dateTime).toISOString().startsWith(formData.paymentMonth);
 
         return (
           (!formData.courseId || payment.course.id === formData.courseId) &&
